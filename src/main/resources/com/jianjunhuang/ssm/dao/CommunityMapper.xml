@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jianjunhuang.ssm.dao.CommunityMapper">
+    <!--todo is_agree-->
+    <select id="getAllCommunity" resultType="com.jianjunhuang.ssm.entity.Community">
+        SELECT
+            t_community.f_machine_id,
+            t_community.f_title,
+            t_community.f_content,
+            t_community.f_date,
+            count(agree.f_community_id)    agreeNum,
+            count(disagree.f_community_id) disagreeNum,
+            is_agree
+        FROM t_community, t_community_disposition,
+            (SELECT *
+             FROM t_community_disposition
+             WHERE f_community_id = #{communityId} AND f_is_agree = 1) agree,
+            (SELECT *
+             FROM t_community_disposition
+             WHERE f_community_id = #{communityId} AND f_is_agree = -1) disagree
+        WHERE t_community.f_machine_id = #{machineId} AND
+              t_community.f_community_id = t_community_disposition.f_community_id;
+    </select>
+
+    <insert id="setAgree">
+        INSERT INTO t_community_disposition (f_community_id, f_user_id, f_is_agree)
+        VALUES (#{communityId}, #{userId}, #{isAgree});
+    </insert>
+
+    <insert id="addCommunity">
+        INSERT INTO t_community (f_community_id, f_user_id, f_machine_id, f_title, f_content, f_date, f_is_del)
+        VALUES (#{community.communityId}, #{userId}, #{machineId}, #{community.title}, #{community.content},
+                #{community.data}, 0)
+    </insert>
+
+</mapper>

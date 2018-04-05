@@ -1,0 +1,26 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jianjunhuang.ssm.dao.MachineMapper">
+
+    <insert id="addMachine" parameterType="com.jianjunhuang.ssm.entity.Machine">
+        INSERT INTO t_machine (f_machine_id, f_status, f_temperature, f_level, f_connected)
+        VALUES
+            (#{machineId}, #{status}, #{temperature}, #{level}, #{isConnected})
+    </insert>
+
+    <select id="getMachine" resultMap="Machine">
+        SELECT *
+        FROM t_machine
+        WHERE f_machine_id = #{machineId}
+    </select>
+
+    <resultMap id="Machine" type="com.jianjunhuang.ssm.entity.Machine">
+        <id property="machineId" column="f_machine_id"/>
+        <result property="status" column="f_status"/>
+        <result property="temperature" column="f_temperature"/>
+        <result property="level" column="f_level"/>
+        <result property="isConnected" column="f_connected"/>
+    </resultMap>
+
+</mapper>
