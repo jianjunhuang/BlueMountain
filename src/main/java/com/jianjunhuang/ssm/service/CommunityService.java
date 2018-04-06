@@ -4,8 +4,8 @@ import com.jianjunhuang.ssm.entity.Community;
 
 public interface CommunityService {
 
-    void addComment(Community community);
+    void addComment(String userId, String machineId, Community community);
 
-    void vote(boolean isAgree);
+    void vote(String userId, String machineId, boolean isAgree);
 
 }

@@ -7,9 +7,9 @@ public interface MachineMapper {
 
     Machine getMachine(String machineId);
 
-    void addMachine(Machine machine);
+    int addMachine(Machine machine);
 
-    void updateMachine(Machine machine);
+    int updateMachine(Machine machine);
 }
 
 

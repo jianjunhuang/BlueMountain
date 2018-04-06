@@ -11,5 +11,7 @@ public interface UserMapper {
 
     User getUser(@Param("machineId") String machineId, @Param("userId") String userId);
 
-    void addUser(@Param("user") User user, @Param("machineId") String machineId);
+    int addUser(@Param("user") User user, @Param("machineId") String machineId);
+
+    int updateUser(@Param("user") User user);
 }

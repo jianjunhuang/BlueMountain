@@ -14,11 +14,11 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     public void aaMachine(Machine machine) {
-
+        machineMapper.addMachine(machine);
     }
 
     @Override
     public void updateMachine(Machine machine) {
-
+        machineMapper.updateMachine(machine);
     }
 }

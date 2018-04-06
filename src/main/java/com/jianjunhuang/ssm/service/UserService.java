@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    void addUser(User user);
+    void addUser(User user,String machineId);
 
     void updateUserStatus(User user);
 
@@ -14,7 +14,7 @@ public interface UserService {
 
     User getUser(String userId);
 
-    void reservationCoffee(String userId);
+    void reservationCoffee(String userId,String machineId);
 
     void connectedToCoffee(String machineId, User user);
 

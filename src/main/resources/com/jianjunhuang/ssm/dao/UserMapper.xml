@@ -20,6 +20,12 @@
         VALUES (#{user.userId}, #{user.name}, #{user.status}, #{user.cupSize}, #{user.favTemperature}, #{machineId})
     </insert>
 
+    <update id="updateUser">
+        UPDATE t_user
+        SET f_user_status          = #{user.status}, f_user_cup_size = #{user.cupSize},
+            f_user_fav_temperature = #{user.favTemperature}
+    </update>
+
     <resultMap id="User" type="com.jianjunhuang.ssm.entity.User">
         <id property="userId" column="f_user_id"/>
         <result property="name" column="f_user_name"/>
