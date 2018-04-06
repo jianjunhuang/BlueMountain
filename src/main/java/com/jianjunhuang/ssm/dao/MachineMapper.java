@@ -9,6 +9,7 @@ public interface MachineMapper {
 
     void addMachine(Machine machine);
 
+    void updateMachine(Machine machine);
 }
 
 

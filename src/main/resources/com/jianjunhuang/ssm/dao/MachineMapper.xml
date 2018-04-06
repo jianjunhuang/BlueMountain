@@ -15,6 +15,12 @@
         WHERE f_machine_id = #{machineId}
     </select>
 
+    <update id="updateMachine">
+        UPDATE t_machine
+        SET f_status    = #{machine.status}, f_temperature = #{machine.temperature}, f_level = #{machine.level},
+            f_connected = #{machine.isConnected};
+    </update>
+
     <resultMap id="Machine" type="com.jianjunhuang.ssm.entity.Machine">
         <id property="machineId" column="f_machine_id"/>
         <result property="status" column="f_status"/>
