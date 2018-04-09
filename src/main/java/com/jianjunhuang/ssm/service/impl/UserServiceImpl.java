@@ -4,10 +4,11 @@ import com.jianjunhuang.ssm.dao.MachineMapper;
 import com.jianjunhuang.ssm.dao.UserMapper;
 import com.jianjunhuang.ssm.entity.User;
 import com.jianjunhuang.ssm.service.UserService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-
+@Service
 public class UserServiceImpl implements UserService {
 
     @Resource

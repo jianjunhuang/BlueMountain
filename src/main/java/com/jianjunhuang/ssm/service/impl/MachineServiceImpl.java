@@ -3,9 +3,10 @@ package com.jianjunhuang.ssm.service.impl;
 import com.jianjunhuang.ssm.dao.MachineMapper;
 import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.service.MachineService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
+@Service
 public class MachineServiceImpl implements MachineService {
 
     @Resource
