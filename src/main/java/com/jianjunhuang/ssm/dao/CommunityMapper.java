@@ -9,8 +9,8 @@ public interface CommunityMapper {
 
     List<Community> getAllCommunity(@Param("machineId") String machineId, @Param("userId") String userId);
 
-    int addCommunity(@Param("community") Community community, @Param("userId") String userId, @Param("machineId") String machineId);
+    void addCommunity(@Param("community") Community community, @Param("userId") String userId, @Param("machineId") String machineId);
 
-    int setAgree(@Param("communityId") String communityId, @Param("userId") String userId, @Param("isAgree") int isAgree);
+    void setAgree(@Param("communityId") String communityId, @Param("userId") String userId, @Param("isAgree") int isAgree);
 
 }

@@ -28,11 +28,6 @@
     <context:property-placeholder location="classpath:config/jdbc.properties" />
      
 
-	<!-- 配置Viewer-->
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/jsp/"></property>
-		<property name="suffix" value=".jsp"></property>
-	</bean>
 	
 	<!-- 配置文件上传 -->
 	<bean id="multipartResolver"

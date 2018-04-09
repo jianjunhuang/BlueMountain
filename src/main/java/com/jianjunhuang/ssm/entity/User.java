@@ -1,13 +1,28 @@
 package com.jianjunhuang.ssm.entity;
 
+import org.apache.ibatis.type.Alias;
+
 import java.io.Serializable;
 
-public class User implements Serializable{
+@Alias("User")
+public class User {
     private String userId;
     private String name;
     private int status;
     private float favTemperature;
     private float cupSize;
+
+    public User() {
+        super();
+    }
+
+    public User(String userId, String name, int status, float favTemperature, float cupSize) {
+        this.userId = userId;
+        this.name = name;
+        this.status = status;
+        this.favTemperature = favTemperature;
+        this.cupSize = cupSize;
+    }
 
     public String getUserId() {
         return userId;

@@ -1,9 +1,12 @@
 package com.jianjunhuang.ssm.entity;
 
+import org.apache.ibatis.type.Alias;
+
 import java.io.Serializable;
 import java.util.Date;
 
-public class Community implements Serializable {
+@Alias("Community")
+public class Community {
 
     private String communityId;
     private String title;
@@ -12,6 +15,20 @@ public class Community implements Serializable {
     private int agreeNum;
     private int disagreeNum;
     private int isAgree;
+
+    public Community() {
+        super();
+    }
+
+    public Community(String communityId, String title, String content, Date date, int agreeNum, int disagreeNum, int isAgree) {
+        this.communityId = communityId;
+        this.title = title;
+        this.content = content;
+        this.date = date;
+        this.agreeNum = agreeNum;
+        this.disagreeNum = disagreeNum;
+        this.isAgree = isAgree;
+    }
 
     public String getCommunityId() {
         return communityId;
