@@ -24,7 +24,6 @@ public class MachineController {
     @RequestMapping(produces = "application/json;charset=UTF-8", value = "machine/addMachine", method = RequestMethod.POST)
     @ResponseBody
     public Result<Map> addMachine(HttpServletRequest request, HttpServletResponse response, String machineId) {
-        Map<Object, Object> resultMap = new HashMap<>();
         Result<Map> result = new Result<>();
         if (null != machineId && "".equals(machineId)) {
             result.setReason("machineId is null");
@@ -32,6 +31,7 @@ public class MachineController {
             return result;
         }
         result.setStatus(Result.SUCCESS);
+        result.setReason(machineId);
         return result;
     }
 
