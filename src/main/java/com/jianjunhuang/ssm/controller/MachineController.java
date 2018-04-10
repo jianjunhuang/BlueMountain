@@ -4,8 +4,10 @@ import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.service.MachineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ public class MachineController {
     private MachineService machineService;
 
     @RequestMapping(produces = "application/json;charset=UTF-8", value = "machine/addMachine", method = RequestMethod.POST)
+    @ResponseBody
     public Result<Map> addMachine(HttpServletRequest request, HttpServletResponse response, String machineId) {
         Map<Object, Object> resultMap = new HashMap<>();
         Result<Map> result = new Result<>();
