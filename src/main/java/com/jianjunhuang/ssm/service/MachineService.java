@@ -4,8 +4,8 @@ import com.jianjunhuang.ssm.entity.Machine;
 
 public interface MachineService {
 
-    void aaMachine(Machine machine);
+    boolean addMachine(Machine machine);
 
-    void updateMachine(Machine machine);
+    boolean updateMachine(Machine machine);
 
 }

@@ -11,6 +11,6 @@ public interface CommunityMapper {
 
     void addCommunity(@Param("community") Community community, @Param("userId") String userId, @Param("machineId") String machineId);
 
-    void setAgree(@Param("communityId") String communityId, @Param("userId") String userId, @Param("isAgree") int isAgree);
+    void setAgree(@Param("communityId") String communityId, @Param("userId") String userId, @Param("isAgree") boolean isAgree);
 
 }

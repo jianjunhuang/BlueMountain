@@ -18,13 +18,23 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     @Transactional
-    public void aaMachine(Machine machine) {
-        machineMapper.addMachine(machine);
+    public boolean addMachine(Machine machine) {
+        Machine m = machineMapper.getMachine(machine.getMachineId());
+        if (null == m) {
+            machineMapper.addMachine(machine);
+            return true;
+        }
+        return false;
     }
 
     @Override
     @Transactional
-    public void updateMachine(Machine machine) {
+    public boolean updateMachine(Machine machine) {
+        Machine m = machineMapper.getMachine(machine.getMachineId());
+        if (null == m) {
+            return false;
+        }
         machineMapper.updateMachine(machine);
+        return true;
     }
 }
