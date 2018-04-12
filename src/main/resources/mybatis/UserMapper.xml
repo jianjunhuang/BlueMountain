@@ -18,7 +18,7 @@
 
     <insert id="addUser">
         INSERT INTO t_user (f_user_id, f_user_name, f_user_status, f_user_cup_size, f_user_fav_temperature, f_machine_id)
-        VALUES (#{user.userId}, #{user.name}, #{user.status}, #{user.cupSize}, #{user.favTemperature}, #{machineId})
+        VALUES (#{user.userId}, #{user.name}, #{user.status}, #{user.cupSize}, #{user.favTemperature}, #{user.machineId})
     </insert>
 
     <update id="updateUser">
@@ -33,5 +33,6 @@
         <result property="status" column="f_user_status"/>
         <result property="cupSize" column="f_user_cup_size"/>
         <result property="favTemperature" column="f_user_fav_temperature"/>
+        <result property="machineId" column="f_machine_id"/>
     </resultMap>
 </mapper>

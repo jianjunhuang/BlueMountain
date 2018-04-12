@@ -24,7 +24,7 @@ public class MachineController {
     @ResponseBody
     public Result<Map> updateMachine(HttpServletRequest request, HttpServletResponse response,@RequestBody Machine machine) {
         Result<Map> result = new Result<>();
-        if (null != machine && "".equals(machine.getMachineId())) {
+        if (null == machine || "".equals(machine.getMachineId())) {
             result.setReason("machineId is null");
             result.setStatus(Result.PARAMETER_LOST);
             return result;

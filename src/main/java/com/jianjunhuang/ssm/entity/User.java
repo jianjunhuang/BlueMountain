@@ -11,17 +11,19 @@ public class User {
     private int status;
     private float favTemperature;
     private float cupSize;
+    private String machineId;
 
     public User() {
         super();
     }
 
-    public User(String userId, String name, int status, float favTemperature, float cupSize) {
+    public User(String userId, String name, int status, float favTemperature, float cupSize, String machineId) {
         this.userId = userId;
         this.name = name;
         this.status = status;
         this.favTemperature = favTemperature;
         this.cupSize = cupSize;
+        this.machineId = machineId;
     }
 
     public String getUserId() {
@@ -64,12 +66,21 @@ public class User {
         this.cupSize = cupSize;
     }
 
+    public String getMachineId() {
+        return machineId;
+    }
+
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
+    }
+
     @Override
     public String toString() {
         return "\n\nname = " + name +
                 "\nuserId = " + userId +
                 "\nstatus = " + status +
                 "\nfav temp = " + favTemperature +
-                "\ncup size = " + cupSize;
+                "\ncup size = " + cupSize +
+                "\nmachineId = " + machineId;
     }
 }

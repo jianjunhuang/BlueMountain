@@ -19,14 +19,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void addUser(User user, String machineId) {
-        userMapper.addUser(user, machineId);
+    public void addUser(User user) {
+        userMapper.addUser(user);
     }
 
     @Override
     @Transactional
     public void updateUserStatus(User user) {
-        //todo
+        userMapper.updateUser(user);
     }
 
     @Override
