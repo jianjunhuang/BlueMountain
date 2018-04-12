@@ -15,16 +15,16 @@ public class MachineMapperImpl implements MachineMapper {
 
     @Override
     public Machine getMachine(String machineId) {
-        return sqlSessionTemplate.selectOne("MachineMapper.getMachine", machineId);
+        return sqlSessionTemplate.selectOne("getMachine", machineId);
     }
 
     @Override
     public void addMachine(Machine machine) {
-        sqlSessionTemplate.insert("MachineMapper.addMachine", machine);
+        sqlSessionTemplate.insert("addMachine", machine);
     }
 
     @Override
     public void updateMachine(Machine machine) {
-        sqlSessionTemplate.update("MachineMapper.updateMachine", machine);
+        sqlSessionTemplate.update("updateMachine", machine);
     }
 }

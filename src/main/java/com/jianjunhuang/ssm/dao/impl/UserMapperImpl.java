@@ -21,7 +21,7 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public List<User> getAllUser(String machineId) {
-        return sqlSessionTemplate.selectList("UserMapper.getAllUser", machineId);
+        return sqlSessionTemplate.selectList("getAllUser", machineId);
     }
 
     @Override
@@ -29,18 +29,18 @@ public class UserMapperImpl implements UserMapper {
         Map map = new HashMap();
         map.put("machineId", machineId);
         map.put("userId", userId);
-        return sqlSessionTemplate.selectOne("UserMapper.getUser", map);
+        return sqlSessionTemplate.selectOne("getUser", map);
     }
 
     @Override
     public void addUser(User user) {
         user.setUserId(uuidGenerator.generateUUID());
-        sqlSessionTemplate.insert("UserMapper.addUser", user);
+        sqlSessionTemplate.insert("addUser", user);
     }
 
     @Override
     public int updateUser(User user) {
-        sqlSessionTemplate.update("UserMapper.updateUser", user);
+        sqlSessionTemplate.update("updateUser", user);
         return 0;
     }
 }

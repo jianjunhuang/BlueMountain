@@ -5,6 +5,7 @@ import com.jianjunhuang.ssm.dao.UserMapper;
 import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.entity.User;
+import com.jianjunhuang.ssm.request.param.GetUserParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +55,16 @@ public class UserController {
             userMapper.updateUser(user);
         }
         result.setStatus(Result.SUCCESS);
+        return result;
+    }
+
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/getUserInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<User> getUserInfo(HttpServletRequest request, HttpServletResponse response, @RequestBody GetUserParam getUserParam) {
+        Result result = new Result();
+        User user = userMapper.getUser(getUserParam.getMachineId(), getUserParam.getUserId());
+        result.setStatus(Result.SUCCESS);
+        result.setData(user);
         return result;
     }
 }
