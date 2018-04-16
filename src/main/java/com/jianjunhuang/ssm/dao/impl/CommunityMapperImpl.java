@@ -22,7 +22,10 @@ public class CommunityMapperImpl implements CommunityMapper {
 
     @Override
     public List<Community> getAllCommunity(String machineId, String userId) {
-        return sqlSessionTemplate.selectList("getAllCommunity");
+        Map map = new HashMap();
+        map.put("userId", userId);
+        map.put("machineId", machineId);
+        return sqlSessionTemplate.selectList("getAllCommunity", map);
     }
 
     @Override

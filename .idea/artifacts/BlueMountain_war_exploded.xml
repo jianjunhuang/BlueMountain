@@ -20,6 +20,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-aspects:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.8.13" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-websocket:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.0.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.0.4.RELEASE" />

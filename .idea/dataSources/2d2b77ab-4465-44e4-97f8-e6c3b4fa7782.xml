@@ -1024,7 +1024,7 @@ f_user_id</ColNames>
     <foreign-key id="251" parent="230" name="t_user_id_fk">
       <ColNames>f_user_id</ColNames>
       <RefSchemaName>BlueMountain</RefSchemaName>
-      <RefTableName>t_community</RefTableName>
+      <RefTableName>t_user</RefTableName>
       <RefColNames>f_user_id</RefColNames>
     </foreign-key>
     <column id="252" parent="231" name="f_machine_id">

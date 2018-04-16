@@ -4,6 +4,7 @@ import com.jianjunhuang.ssm.dao.CommunityMapper;
 import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.entity.Community;
 import com.jianjunhuang.ssm.request.param.CommunityParam;
+import com.jianjunhuang.ssm.request.param.IdParam;
 import com.jianjunhuang.ssm.request.param.VoteParam;
 import com.jianjunhuang.ssm.utils.ParamChecker;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 public class CommunityController {
@@ -46,6 +48,17 @@ public class CommunityController {
         return result;
     }
 
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "community/get", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getCommunity(HttpServletRequest request, HttpServletResponse response,@RequestBody IdParam idParam) {
+        Result result = paramChecker.checkIdParam(idParam);
+        if (result.getStatus() != Result.SUCCESS) {
+            return result;
+        }
+        List<Community> communities = communityMapper.getAllCommunity(idParam.getMachineId(),idParam.getUserId());
+        result.setData(communities);
+        return result;
+    }
 
 
 }
