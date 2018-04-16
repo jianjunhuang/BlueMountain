@@ -2,7 +2,9 @@ package com.jianjunhuang.ssm.controller;
 
 import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.entity.Machine;
+import com.jianjunhuang.ssm.request.param.IdParam;
 import com.jianjunhuang.ssm.service.MachineService;
+import com.jianjunhuang.ssm.utils.ParamChecker;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +21,12 @@ public class MachineController {
 
     @Resource
     private MachineService machineService;
+    @Resource
+    private ParamChecker paramChecker;
 
     @RequestMapping(produces = "application/json;charset=UTF-8", value = "machine/updateMachine", method = RequestMethod.POST)
     @ResponseBody
-    public Result<Map> updateMachine(HttpServletRequest request, HttpServletResponse response,@RequestBody Machine machine) {
+    public Result<Map> updateMachine(HttpServletRequest request, HttpServletResponse response, @RequestBody Machine machine) {
         Result<Map> result = new Result<>();
         if (null == machine || "".equals(machine.getMachineId())) {
             result.setReason("machineId is null");
@@ -37,5 +41,15 @@ public class MachineController {
         result.setStatus(Result.SUCCESS);
         return result;
     }
+
+    public Result orderCoffee(HttpServletRequest request, HttpServletResponse response, @RequestBody IdParam userParam) {
+        Result result = paramChecker.checkIdParam(userParam);
+        if (result.getStatus() != Result.SUCCESS) {
+            return result;
+        }
+        //TODO
+        return result;
+    }
+
 
 }

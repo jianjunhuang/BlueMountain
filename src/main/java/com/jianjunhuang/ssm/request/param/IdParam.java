@@ -1,14 +1,14 @@
 package com.jianjunhuang.ssm.request.param;
 
-public class GetUserParam {
+public class IdParam {
 
     private String userId;
     private String machineId;
 
-    public GetUserParam() {
+    public IdParam() {
         super();
     }
-    public GetUserParam(String userId, String machineId) {
+    public IdParam(String userId, String machineId) {
         this.userId = userId;
         this.machineId = machineId;
     }

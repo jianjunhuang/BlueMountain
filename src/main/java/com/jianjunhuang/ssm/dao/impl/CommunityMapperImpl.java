@@ -22,7 +22,7 @@ public class CommunityMapperImpl implements CommunityMapper {
 
     @Override
     public List<Community> getAllCommunity(String machineId, String userId) {
-        return sqlSessionTemplate.selectList("CommunityMapper.getAllCommunity");
+        return sqlSessionTemplate.selectList("getAllCommunity");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CommunityMapperImpl implements CommunityMapper {
         map.put("community", community);
         map.put("userId", userId);
         map.put("machineId", machineId);
-        sqlSessionTemplate.insert("CommunityMapper.addCommunity", map);
+        sqlSessionTemplate.insert("addCommunity", map);
     }
 
     @Override
@@ -41,6 +41,6 @@ public class CommunityMapperImpl implements CommunityMapper {
         map.put("communityId", communityId);
         map.put("userId", userId);
         map.put("isAgree", isAgree);
-        sqlSessionTemplate.insert("CommunityMapper.setAgree", map);
+        sqlSessionTemplate.insert("setAgree", map);
     }
 }

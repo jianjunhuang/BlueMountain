@@ -70,4 +70,9 @@ public class Machine {
                 "\nlevel=" + level +
                 "\nisConnected=" + isConnected;
     }
+
+    @Override
+    public int hashCode() {
+        return machineId.hashCode();
+    }
 }

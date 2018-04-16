@@ -83,4 +83,5 @@ public class User {
                 "\ncup size = " + cupSize +
                 "\nmachineId = " + machineId;
     }
+
 }

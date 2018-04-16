@@ -927,41 +927,41 @@
     </table>
     <column id="233" parent="229" name="f_community_id">
       <Position>1</Position>
-      <DataType>varchar(32)|0</DataType>
+      <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="234" parent="229" name="f_user_id">
       <Position>2</Position>
-      <DataType>varchar(32)|0</DataType>
+      <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="235" parent="229" name="f_machine_id">
       <Position>3</Position>
-      <DataType>varchar(32)|0</DataType>
+      <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="236" parent="229" name="f_title">
       <Position>4</Position>
-      <DataType>varchar(256)|0</DataType>
+      <DataType>varchar(256)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="237" parent="229" name="f_content">
       <Position>5</Position>
-      <DataType>varchar(2048)|0</DataType>
+      <DataType>varchar(2048)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="238" parent="229" name="f_date">
       <Position>6</Position>
-      <DataType>datetime|0</DataType>
+      <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="239" parent="229" name="f_is_del">
       <Position>7</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <index id="240" parent="229" name="t_community_user_fk">
@@ -991,19 +991,19 @@ f_machine_id</ColNames>
     </foreign-key>
     <column id="245" parent="230" name="f_community_id">
       <Position>1</Position>
-      <DataType>varchar(32)|0</DataType>
+      <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="246" parent="230" name="f_user_id">
       <Position>2</Position>
-      <DataType>varchar(32)|0</DataType>
+      <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="247" parent="230" name="f_is_agree">
       <Position>3</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <index id="248" parent="230" name="t_user_id_fk">
@@ -1029,28 +1029,28 @@ f_user_id</ColNames>
     </foreign-key>
     <column id="252" parent="231" name="f_machine_id">
       <Position>1</Position>
-      <DataType>varchar(32)|0</DataType>
+      <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="253" parent="231" name="f_status">
       <Position>2</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="254" parent="231" name="f_temperature">
       <Position>3</Position>
-      <DataType>float|0</DataType>
+      <DataType>float|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="255" parent="231" name="f_level">
       <Position>4</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="256" parent="231" name="f_connected">
       <Position>5</Position>
-      <DataType>tinyint(1)|0</DataType>
+      <DataType>tinyint(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <key id="257" parent="231" name="PRIMARY">
@@ -1060,34 +1060,34 @@ f_user_id</ColNames>
     </key>
     <column id="258" parent="232" name="f_user_id">
       <Position>1</Position>
-      <DataType>varchar(32)|0</DataType>
+      <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="259" parent="232" name="f_user_name">
       <Position>2</Position>
-      <DataType>varchar(120)|0</DataType>
+      <DataType>varchar(120)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="260" parent="232" name="f_user_status">
       <Position>3</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="261" parent="232" name="f_user_cup_size">
       <Position>4</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="262" parent="232" name="f_user_fav_temperature">
       <Position>5</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="263" parent="232" name="f_machine_id">
       <Position>6</Position>
-      <DataType>varchar(32)|0</DataType>
+      <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
