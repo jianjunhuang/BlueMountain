@@ -23,8 +23,9 @@
 
     <update id="updateUser">
         UPDATE t_user
-        SET f_user_status          = #{user.status}, f_user_cup_size = #{user.cupSize},
-            f_user_fav_temperature = #{user.favTemperature}
+        SET f_user_status          = #{status}, f_user_cup_size = #{cupSize},
+            f_user_fav_temperature = #{favTemperature}
+        WHERE f_user_id = #{userId} and f_machine_id = #{machineId}
     </update>
 
     <resultMap id="User" type="com.jianjunhuang.ssm.entity.User">

@@ -6,6 +6,7 @@ import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.entity.User;
 import com.jianjunhuang.ssm.request.param.IdParam;
+import com.jianjunhuang.ssm.utils.ParamChecker;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,9 @@ public class UserController {
 
     @Resource
     private MachineMapper machineMapper;
+
+    @Resource
+    private ParamChecker paramChecker;
 
     @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/connectedOrUpdate", method = RequestMethod.POST)
     @ResponseBody
@@ -65,6 +69,22 @@ public class UserController {
         User user = userMapper.getUser(idParam.getMachineId(), idParam.getUserId());
         result.setStatus(Result.SUCCESS);
         result.setData(user);
+        return result;
+    }
+
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/disconnected", method = RequestMethod.POST)
+    @ResponseBody
+    public Result disconnected(HttpServletResponse response, HttpServletRequest request, @RequestBody IdParam idParam) {
+        Result result = paramChecker.checkIdParam(idParam);
+        User user = userMapper.getUser(idParam.getMachineId(), idParam.getUserId());
+        if (null == user) {
+            result.setStatus(Result.FAILED);
+            result.setReason("no this user");
+            return result;
+        }
+        System.out.println(user);
+        user.setStatus(-1);
+        userMapper.updateUser(user);
         return result;
     }
 }
