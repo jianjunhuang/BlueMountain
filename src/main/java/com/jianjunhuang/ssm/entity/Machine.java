@@ -9,17 +9,19 @@ public class Machine {
     private float temperature;
     private int level;
     private boolean isConnected;
+    private float insulation;
 
     public Machine() {
         super();
     }
 
-    public Machine(String machineId, int status, float temperature, int level, boolean isConnected) {
+    public Machine(String machineId, int status, float temperature, int level, boolean isConnected, float insulation) {
         this.machineId = machineId;
         this.status = status;
         this.temperature = temperature;
         this.level = level;
         this.isConnected = isConnected;
+        this.insulation = insulation;
     }
 
     public String getMachineId() {
@@ -62,13 +64,22 @@ public class Machine {
         isConnected = connected;
     }
 
+    public float getInsulation() {
+        return insulation;
+    }
+
+    public void setInsulation(float insulation) {
+        this.insulation = insulation;
+    }
+
     @Override
     public String toString() {
         return "\n\nmachineId = " + machineId +
                 "\nstatus = " + status +
                 "\ntemperature = " + temperature +
                 "\nlevel=" + level +
-                "\nisConnected=" + isConnected;
+                "\nisConnected=" + isConnected +
+                "\ninsulation=" + insulation;
     }
 
     @Override

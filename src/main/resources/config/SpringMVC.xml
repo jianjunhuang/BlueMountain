@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"  
-	xmlns:context="http://www.springframework.org/schema/context"  
-	xmlns:p="http://www.springframework.org/schema/p"  
-	xmlns:mvc="http://www.springframework.org/schema/mvc"  
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
 	http://www.springframework.org/schema/context  
 	http://www.springframework.org/schema/context/spring-context.xsd  
@@ -14,28 +14,29 @@
 	http://www.springframework.org/schema/tx 
 	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-	<!-- 扫描业务逻辑包-->
-	<context:component-scan base-package="com.jianjunhuang.ssm.controller"/>
-	<!-- 业务逻辑层扫描 -->
-	<context:component-scan base-package="com.jianjunhuang.ssm.service" />
-	<!-- 工具包扫描 -->
-	<context:component-scan base-package="com.jianjunhuang.ssm.utils" />
-	<!-- 数据库访问层扫描 -->
-	<context:component-scan base-package="com.jianjunhuang.ssm.dao" />
-	<!-- MyBatis 框架支撑插件 -->
-	<context:component-scan base-package="com.jianjunhuang.ssm.base.mybatis"/>
-    
-    <context:property-placeholder location="classpath:config/jdbc.properties" />
-     
+    <!-- 扫描业务逻辑包-->
+    <context:component-scan base-package="com.jianjunhuang.ssm.controller"/>
+    <!-- 业务逻辑层扫描 -->
+    <context:component-scan base-package="com.jianjunhuang.ssm.service"/>
+    <!-- 工具包扫描 -->
+    <context:component-scan base-package="com.jianjunhuang.ssm.utils"/>
+    <!-- 数据库访问层扫描 -->
+    <context:component-scan base-package="com.jianjunhuang.ssm.dao"/>
+    <!-- MyBatis 框架支撑插件 -->
+    <context:component-scan base-package="com.jianjunhuang.ssm.base.mybatis"/>
 
-	
-	<!-- 配置文件上传 -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="defaultEncoding" value="utf-8"></property>
-	</bean>
-	
-	<!-- 配置SpringMvc注解 -->
-	<mvc:annotation-driven/>
-	
+    <context:property-placeholder location="classpath:config/jdbc.properties"/>
+
+    <context:component-scan base-package="com.jianjunhuang.ssm.websocket"/>
+
+
+    <!-- 配置文件上传 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+    </bean>
+
+    <!-- 配置SpringMvc注解 -->
+    <mvc:annotation-driven/>
+
 </beans>
