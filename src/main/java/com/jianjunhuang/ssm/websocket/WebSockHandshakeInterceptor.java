@@ -1,5 +1,6 @@
 package com.jianjunhuang.ssm.websocket;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -13,19 +14,32 @@ public class WebSockHandshakeInterceptor implements HandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse,
                                    WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
-        if (serverHttpRequest instanceof ServletServerHttpRequest) {
-            ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) serverHttpRequest;
-            HttpSession session = servletRequest.getServletRequest().getSession(false);
-            if (session != null) {
-                //使用userName区分WebSocketHandler，以便定向发送消息
-                String userName = (String) session.getAttribute("SESSION_USERNAME");
-                if (userName == null) {
-                    userName = "system-" + session.getId();
-                }
-                map.put("WEBSOCKET_USERNAME", userName);
+        System.out.println(serverHttpRequest.getHeaders());
+        HttpHeaders httpHeaders = serverHttpRequest.getHeaders();
+
+        if (!httpHeaders.containsKey("type")) {
+            return false;
+        }
+        String type = httpHeaders.get("type").get(0);
+        if (null == type || "".equals(type)) {
+            return false;
+        }
+
+        map.put("type", type);
+
+        if (type.equals("machine")) {
+            if (httpHeaders.containsKey("machineId")) {
+                map.put("machineId", httpHeaders.get("machineId").get(0));
+                return true;
+            }
+        } else if (type.equals("phone")) {
+            if (httpHeaders.containsKey("userId") && httpHeaders.containsKey("machineId")) {
+                map.put("userId", httpHeaders.get("userId").get(0));
+                map.put("machineId", httpHeaders.get("machineId").get(0));
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override

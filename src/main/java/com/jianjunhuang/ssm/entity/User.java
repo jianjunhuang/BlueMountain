@@ -6,6 +6,12 @@ import java.io.Serializable;
 
 @Alias("User")
 public class User {
+
+    public static final int ONLINE = 0;
+    public static final int OUTLINE = 1;
+    public static final int WAITING = 2;
+    public static final int GETINT = 3;
+
     private String userId;
     private String name;
     private int status;
