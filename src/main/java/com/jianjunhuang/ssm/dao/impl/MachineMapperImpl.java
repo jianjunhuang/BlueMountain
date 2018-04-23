@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @Repository
 public class MachineMapperImpl implements MachineMapper {
@@ -20,12 +21,13 @@ public class MachineMapperImpl implements MachineMapper {
 
     @Override
     public void addMachine(Machine machine) {
-
+        machine.setLastUpdate(new Date());
         sqlSessionTemplate.insert("addMachine", machine);
     }
 
     @Override
     public void updateMachine(Machine machine) {
+        machine.setLastUpdate(new Date());
         sqlSessionTemplate.update("updateMachine", machine);
     }
 }

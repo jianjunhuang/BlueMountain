@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +35,13 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public void addUser(User user) {
+        user.setLastUpdate(new Date());
         sqlSessionTemplate.insert("addUser", user);
     }
 
     @Override
     public int updateUser(User user) {
+        user.setLastUpdate(new Date());
         sqlSessionTemplate.update("updateUser", user);
         return 0;
     }
