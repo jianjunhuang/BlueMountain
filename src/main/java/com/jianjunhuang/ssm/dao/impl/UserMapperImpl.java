@@ -34,7 +34,6 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public void addUser(User user) {
-        user.setUserId(uuidGenerator.generateUUID());
         sqlSessionTemplate.insert("addUser", user);
     }
 
