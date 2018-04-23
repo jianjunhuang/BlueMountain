@@ -34,8 +34,7 @@ public class MachineController {
             return result;
         }
         System.out.println(machine);
-        if (machineService.addMachine(machine)) {
-        } else {
+        if (!machineService.addMachine(machine)) {
             machineService.updateMachine(machine);
         }
         result.setStatus(Result.SUCCESS);
@@ -50,6 +49,8 @@ public class MachineController {
         //TODO
         return result;
     }
+
+
 
 
 }

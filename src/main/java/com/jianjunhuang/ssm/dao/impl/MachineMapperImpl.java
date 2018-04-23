@@ -20,6 +20,7 @@ public class MachineMapperImpl implements MachineMapper {
 
     @Override
     public void addMachine(Machine machine) {
+
         sqlSessionTemplate.insert("addMachine", machine);
     }
 

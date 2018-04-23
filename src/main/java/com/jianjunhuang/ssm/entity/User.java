@@ -3,6 +3,7 @@ package com.jianjunhuang.ssm.entity;
 import org.apache.ibatis.type.Alias;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Alias("User")
 public class User {
@@ -18,18 +19,10 @@ public class User {
     private float favTemperature;
     private float cupSize;
     private String machineId;
+    private Date lastUpdate;
 
     public User() {
         super();
-    }
-
-    public User(String userId, String name, int status, float favTemperature, float cupSize, String machineId) {
-        this.userId = userId;
-        this.name = name;
-        this.status = status;
-        this.favTemperature = favTemperature;
-        this.cupSize = cupSize;
-        this.machineId = machineId;
     }
 
     public String getUserId() {
@@ -80,6 +73,14 @@ public class User {
         this.machineId = machineId;
     }
 
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
     @Override
     public String toString() {
         return "\n\nname = " + name +
@@ -87,7 +88,8 @@ public class User {
                 "\nstatus = " + status +
                 "\nfav temp = " + favTemperature +
                 "\ncup size = " + cupSize +
-                "\nmachineId = " + machineId;
+                "\nmachineId = " + machineId +
+                "\nlastUpdate = " + lastUpdate.toString();
     }
 
 }

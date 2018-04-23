@@ -35,5 +35,6 @@
         <result property="cupSize" column="f_user_cup_size"/>
         <result property="favTemperature" column="f_user_fav_temperature"/>
         <result property="machineId" column="f_machine_id"/>
+        <result property="lastUpdate" column="f_last_update"/>
     </resultMap>
 </mapper>

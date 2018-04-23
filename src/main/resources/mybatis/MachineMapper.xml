@@ -29,6 +29,7 @@
         <result property="level" column="f_level"/>
         <result property="isConnected" column="f_connected"/>
         <result property="insulation" column="f_insulation"/>
+        <result property="lastUpdate" column="f_last_update"/>
     </resultMap>
 
 </mapper>

@@ -1058,54 +1058,64 @@ f_user_id</ColNames>
       <DataType>float|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="258" parent="231" name="PRIMARY">
+    <column id="258" parent="231" name="f_last_update">
+      <Position>7</Position>
+      <DataType>datetime|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="259" parent="231" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>f_machine_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="259" parent="232" name="f_user_id">
+    <column id="260" parent="232" name="f_user_id">
       <Position>1</Position>
       <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="260" parent="232" name="f_user_name">
+    <column id="261" parent="232" name="f_user_name">
       <Position>2</Position>
       <DataType>varchar(120)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="261" parent="232" name="f_user_status">
+    <column id="262" parent="232" name="f_user_status">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="262" parent="232" name="f_user_cup_size">
+    <column id="263" parent="232" name="f_user_cup_size">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="263" parent="232" name="f_user_fav_temperature">
+    <column id="264" parent="232" name="f_user_fav_temperature">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="264" parent="232" name="f_machine_id">
+    <column id="265" parent="232" name="f_machine_id">
       <Position>6</Position>
       <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="265" parent="232" name="t_user_fk">
+    <column id="266" parent="232" name="f_last_update">
+      <Position>7</Position>
+      <DataType>datetime|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="267" parent="232" name="t_user_fk">
       <ColNames>f_machine_id</ColNames>
     </index>
-    <key id="266" parent="232" name="PRIMARY">
+    <key id="268" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>f_user_id
 f_machine_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="267" parent="232" name="t_user_fk">
+    <foreign-key id="269" parent="232" name="t_user_fk">
       <ColNames>f_machine_id</ColNames>
       <RefSchemaName>BlueMountain</RefSchemaName>
       <RefTableName>t_machine</RefTableName>

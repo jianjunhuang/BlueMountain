@@ -2,6 +2,8 @@ package com.jianjunhuang.ssm.entity;
 
 import org.apache.ibatis.type.Alias;
 
+import java.util.Date;
+
 @Alias("Machine")
 public class Machine {
     private String machineId;
@@ -10,18 +12,10 @@ public class Machine {
     private int level;
     private boolean isConnected;
     private float insulation;
+    private Date lastUpdate;
 
     public Machine() {
         super();
-    }
-
-    public Machine(String machineId, int status, float temperature, int level, boolean isConnected, float insulation) {
-        this.machineId = machineId;
-        this.status = status;
-        this.temperature = temperature;
-        this.level = level;
-        this.isConnected = isConnected;
-        this.insulation = insulation;
     }
 
     public String getMachineId() {
@@ -72,6 +66,14 @@ public class Machine {
         this.insulation = insulation;
     }
 
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
     @Override
     public String toString() {
         return "\n\nmachineId = " + machineId +
@@ -79,7 +81,8 @@ public class Machine {
                 "\ntemperature = " + temperature +
                 "\nlevel=" + level +
                 "\nisConnected=" + isConnected +
-                "\ninsulation=" + insulation;
+                "\ninsulation=" + insulation +
+                "\nlastUpdate=" + lastUpdate.toString();
     }
 
     @Override
