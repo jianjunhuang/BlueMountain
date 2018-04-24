@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.crypto.Mac;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -50,25 +51,26 @@ public class UserController {
             result.setReason("没有找到该咖啡机，请先添加咖啡机！");
             return result;
         }
-        if (!machine.isConnected()) {
+        if (machine.getStatus() == Machine.STATUS_DISCONNECTED) {
             result.setStatus(Result.FAILED);
             result.setReason("咖啡机断线了，请重新联网！");
             return result;
         }
-        if (null == userService.getUser(user.getUserId(), user.getMachineId())) {
-            userService.addUser(user);
-        } else {
-            userService.updateUserStatus(user);
+        if (null == userService.getUser(user.getUserId())) {
+            result.setStatus(Result.PARAMETER_ERR);
+            result.setReason("请先注册用户");
+            return result;
         }
+        userService.updateUserStatus(user);
         result.setStatus(Result.SUCCESS);
         return result;
     }
 
     @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/getUserInfo", method = RequestMethod.POST)
     @ResponseBody
-    public Result<User> getUserInfo(HttpServletRequest request, HttpServletResponse response, @RequestBody IdParam idParam) {
+    public Result<User> getUserInfo(HttpServletRequest request, HttpServletResponse response, @RequestBody String userId) {
         Result result = new Result();
-        User user = userService.getUser(idParam.getMachineId(), idParam.getUserId());
+        User user = userService.getUser(userId);
         result.setStatus(Result.SUCCESS);
         result.setData(user);
         return result;
@@ -78,14 +80,20 @@ public class UserController {
     @ResponseBody
     public Result disconnected(HttpServletResponse response, HttpServletRequest request, @RequestBody IdParam idParam) {
         Result result = paramChecker.checkIdParam(idParam);
-        User user = userService.getUser(idParam.getMachineId(), idParam.getUserId());
+        User user = userService.getUser(idParam.getUserId());
         if (null == user) {
             result.setStatus(Result.FAILED);
             result.setReason("no this user");
             return result;
         }
+        if (!idParam.getMachineId().equals(user.getMachineId())) {
+            result.setStatus(Result.PARAMETER_ERR);
+            result.setReason("用户并没有连接该咖啡机");
+            return result;
+        }
         System.out.println(user);
-        user.setStatus(-1);
+        user.setMachineId("");
+        user.setStatus(User.OUTLINE);
         userService.updateUserStatus(user);
         return result;
     }
@@ -101,4 +109,55 @@ public class UserController {
         result.setData(list);
         return result;
     }
+
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/register", method = RequestMethod.POST)
+    @ResponseBody
+    public Result register(HttpServletResponse response, HttpServletRequest request, @RequestBody User user) {
+        Result result = new Result();
+        if (null == user) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("parameter lost");
+            return result;
+        }
+        String userName = user.getName();
+        if (null == userName || "".equals(userName)) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("用户名不能为空");
+            return result;
+        }
+        User userTemp = userService.getUserByName(userName);
+        if (userTemp != null) {
+            result.setStatus(Result.FAILED);
+            result.setReason("用户名已被占用");
+            return result;
+        }
+        if (null == user.getPwd() || "".equals(user.getPwd()) || user.getPwd().length() != 8) {
+            result.setStatus(Result.PARAMETER_ERR);
+            result.setReason("请输入正确的8位密码");
+            return result;
+        }
+
+        return result;
+    }
+
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/checkUserName", method = RequestMethod.POST)
+    @ResponseBody
+    public Result checkUserName(HttpServletResponse response, HttpServletRequest request, @RequestBody String userName) {
+        Result result = new Result();
+        if (null == userName || "".equals(userName)) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("用户名不能为空");
+            return result;
+        }
+        User user = userService.getUserByName(userName);
+        if (user != null) {
+            result.setStatus(Result.FAILED);
+            result.setReason("用户名已被占用");
+            return result;
+        }
+        result.setReason("用户名能被正常使用");
+        return result;
+    }
+
+
 }

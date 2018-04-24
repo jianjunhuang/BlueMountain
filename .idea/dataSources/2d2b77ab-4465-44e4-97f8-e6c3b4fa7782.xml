@@ -934,13 +934,11 @@
     <column id="234" parent="229" name="f_user_id">
       <Position>2</Position>
       <DataType>varchar(32)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="235" parent="229" name="f_machine_id">
       <Position>3</Position>
       <DataType>varchar(32)|0s</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="236" parent="229" name="f_title">
@@ -972,9 +970,7 @@
     </index>
     <key id="242" parent="229" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>f_community_id
-f_user_id
-f_machine_id</ColNames>
+      <ColNames>f_community_id</ColNames>
       <Primary>1</Primary>
     </key>
     <foreign-key id="243" parent="229" name="t_community_user_fk">
@@ -1024,7 +1020,7 @@ f_user_id</ColNames>
     <foreign-key id="251" parent="230" name="t_user_id_fk">
       <ColNames>f_user_id</ColNames>
       <RefSchemaName>BlueMountain</RefSchemaName>
-      <RefTableName>t_user</RefTableName>
+      <RefTableName>t_community</RefTableName>
       <RefColNames>f_user_id</RefColNames>
     </foreign-key>
     <column id="252" parent="231" name="f_machine_id">
@@ -1095,27 +1091,39 @@ f_user_id</ColNames>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="265" parent="232" name="f_machine_id">
+    <column id="265" parent="232" name="f_last_update">
       <Position>6</Position>
+      <DataType>datetime|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="266" parent="232" name="f_user_pwd">
+      <Position>7</Position>
       <DataType>varchar(32)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="266" parent="232" name="f_last_update">
-      <Position>7</Position>
-      <DataType>datetime|0s</DataType>
+    <column id="267" parent="232" name="f_machine_id">
+      <Position>8</Position>
+      <DataType>varchar(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="267" parent="232" name="t_user_fk">
+    <index id="268" parent="232" name="t_user_f_user_name_uindex">
+      <ColNames>f_user_name</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="269" parent="232" name="t_user_t_machine_f_machine_id_fk">
       <ColNames>f_machine_id</ColNames>
     </index>
-    <key id="268" parent="232" name="PRIMARY">
+    <key id="270" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>f_user_id
-f_machine_id</ColNames>
+      <ColNames>f_user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="269" parent="232" name="t_user_fk">
+    <key id="271" parent="232" name="t_user_f_user_name_uindex">
+      <ColNames>f_user_name</ColNames>
+      <UnderlyingIndexName>t_user_f_user_name_uindex</UnderlyingIndexName>
+    </key>
+    <foreign-key id="272" parent="232" name="t_user_t_machine_f_machine_id_fk">
       <ColNames>f_machine_id</ColNames>
       <RefSchemaName>BlueMountain</RefSchemaName>
       <RefTableName>t_machine</RefTableName>

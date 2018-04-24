@@ -13,12 +13,12 @@
     <select id="getUser" resultMap="User">
         SELECT *
         FROM t_user
-        WHERE t_user.f_machine_id = #{machineId} AND t_user.f_user_id = #{userId}
+        WHERE t_user.f_user_id = #{userId}
     </select>
 
     <insert id="addUser">
-        INSERT INTO t_user (f_user_id, f_user_name, f_user_status, f_user_cup_size, f_user_fav_temperature, f_machine_id)
-        VALUES (#{userId}, #{name}, #{status}, #{cupSize}, #{favTemperature}, #{machineId})
+        INSERT INTO t_user (f_user_id, f_user_name, f_user_status, f_user_cup_size, f_user_fav_temperature, f_machine_id, f_user_pwd)
+        VALUES (#{userId}, #{name}, #{status}, #{cupSize}, #{favTemperature}, #{machineId}, #{pwd})
     </insert>
 
     <update id="updateUser">
@@ -28,6 +28,12 @@
         WHERE f_user_id = #{userId} and f_machine_id = #{machineId}
     </update>
 
+    <select id="getUserByName" resultMap="User">
+        SELECT *
+        FROM t_user
+        WHERE t_user.f_user_name = #{userName}
+    </select>
+
     <resultMap id="User" type="com.jianjunhuang.ssm.entity.User">
         <id property="userId" column="f_user_id"/>
         <result property="name" column="f_user_name"/>
@@ -36,5 +42,6 @@
         <result property="favTemperature" column="f_user_fav_temperature"/>
         <result property="machineId" column="f_machine_id"/>
         <result property="lastUpdate" column="f_last_update"/>
+        <result property="pwd" column="f_user_pwd"/>
     </resultMap>
 </mapper>

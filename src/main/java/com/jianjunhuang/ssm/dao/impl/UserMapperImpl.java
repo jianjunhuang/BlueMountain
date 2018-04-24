@@ -26,15 +26,15 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public User getUser(String machineId, String userId) {
+    public User getUser(String userId) {
         Map map = new HashMap();
-        map.put("machineId", machineId);
         map.put("userId", userId);
         return sqlSessionTemplate.selectOne("getUser", map);
     }
 
     @Override
     public void addUser(User user) {
+        user.setUserId(uuidGenerator.generateUUID());
         user.setLastUpdate(new Date());
         sqlSessionTemplate.insert("addUser", user);
     }
@@ -44,5 +44,10 @@ public class UserMapperImpl implements UserMapper {
         user.setLastUpdate(new Date());
         sqlSessionTemplate.update("updateUser", user);
         return 0;
+    }
+
+    @Override
+    public User getUserByName(String userName) {
+        return sqlSessionTemplate.selectOne("getUserByName", userName);
     }
 }

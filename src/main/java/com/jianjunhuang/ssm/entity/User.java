@@ -20,6 +20,7 @@ public class User {
     private float cupSize;
     private String machineId;
     private Date lastUpdate;
+    private String pwd;
 
     public User() {
         super();
@@ -81,6 +82,14 @@ public class User {
         this.lastUpdate = lastUpdate;
     }
 
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
     @Override
     public String toString() {
         return "\n\nname = " + name +
@@ -89,7 +98,8 @@ public class User {
                 "\nfav temp = " + favTemperature +
                 "\ncup size = " + cupSize +
                 "\nmachineId = " + machineId +
-                "\nlastUpdate = " + lastUpdate.toString();
+                "\nlastUpdate = " + lastUpdate.toString()+
+                "\npwd = "+pwd;
     }
 
 }

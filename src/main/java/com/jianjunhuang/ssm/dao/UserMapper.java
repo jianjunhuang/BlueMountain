@@ -9,9 +9,11 @@ public interface UserMapper {
 
     List<User> getAllUser(@Param("machineId") String machineId);
 
-    User getUser(@Param("machineId") String machineId, @Param("userId") String userId);
+    User getUser(@Param("userId") String userId);
 
     void addUser(@Param("user") User user);
 
     int updateUser(@Param("user") User user);
+
+    User getUserByName(@Param("userName") String userName);
 }

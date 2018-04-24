@@ -39,7 +39,7 @@ CREATE TABLE t_community (
   f_content      VARCHAR(2048),
   f_date         DATETIME,
   f_is_del       INT,
-  PRIMARY KEY (f_community_id, f_user_id, f_machine_id),
+  PRIMARY KEY (f_community_id),
   CONSTRAINT t_community_user_fk FOREIGN KEY (f_user_id) REFERENCES t_user (f_user_id),
   CONSTRAINT t_community_machine_fk FOREIGN KEY (f_machine_id) REFERENCES t_machine (f_machine_id)
 )

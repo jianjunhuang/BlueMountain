@@ -12,10 +12,12 @@ public interface UserService {
 
     List<User> getAllUser(String machineId);
 
-    User getUser(String userId,String machineId);
+    User getUser(String userId);
 
     void reservationCoffee(String userId, String machineId);
 
     void connectedToCoffee(String machineId, User user);
+
+    User getUserByName(String userName);
 
 }

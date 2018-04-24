@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User getUser(String userId,String machineId) {
-        return userMapper.getUser(machineId,userId);
+    public User getUser(String userId) {
+        return userMapper.getUser(userId);
     }
 
     @Override
@@ -54,5 +54,10 @@ public class UserServiceImpl implements UserService {
     public void connectedToCoffee(String machineId, User user) {
         //1. 检查是否有此 machine
         //2. 检查是否有此用户
+    }
+
+    @Override
+    public User getUserByName(String userName) {
+        return userMapper.getUserByName(userName);
     }
 }
