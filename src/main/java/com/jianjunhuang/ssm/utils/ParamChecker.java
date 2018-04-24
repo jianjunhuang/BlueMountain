@@ -1,10 +1,7 @@
 package com.jianjunhuang.ssm.utils;
 
 import com.jianjunhuang.ssm.dto.Result;
-import com.jianjunhuang.ssm.request.param.CommunityParam;
-import com.jianjunhuang.ssm.request.param.IdParam;
-import com.jianjunhuang.ssm.request.param.InsulationTemperatureParam;
-import com.jianjunhuang.ssm.request.param.VoteParam;
+import com.jianjunhuang.ssm.request.param.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -88,6 +85,21 @@ public class ParamChecker {
             return result;
         }
 
+        return result;
+    }
+
+    public Result checkLoginParam(LoginParam loginParam) {
+        Result result = new Result();
+        if (null == loginParam) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("user name and user password is null");
+            return result;
+        }
+        if (null == loginParam.getUserName() || "".equals(loginParam.getUserName())) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("user name is null or equals ''");
+            return result;
+        }
         return result;
     }
 }

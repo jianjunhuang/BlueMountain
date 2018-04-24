@@ -6,6 +6,7 @@ import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.entity.User;
 import com.jianjunhuang.ssm.request.param.IdParam;
+import com.jianjunhuang.ssm.request.param.LoginParam;
 import com.jianjunhuang.ssm.service.UserService;
 import com.jianjunhuang.ssm.utils.ParamChecker;
 import org.springframework.stereotype.Controller;
@@ -159,5 +160,23 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/login", method = RequestMethod.POST)
+    @ResponseBody
+    public Result login(HttpServletResponse response, HttpServletRequest request, @RequestBody LoginParam loginParam) {
+        Result result = paramChecker.checkLoginParam(loginParam);
+        User user = userService.getUserByName(loginParam.getUserName());
+        if (null == user) {
+            result.setStatus(Result.FAILED);
+            result.setReason("user is not exist");
+            return result;
+        }
+        if (!user.getPwd().equals(loginParam.getUserPwd())) {
+            result.setStatus(Result.FAILED);
+            result.setReason("password is wrong");
+            return result;
+        }
+        result.setData(user);
+        return result;
+    }
 
 }
