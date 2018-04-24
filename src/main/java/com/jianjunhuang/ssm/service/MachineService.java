@@ -8,4 +8,6 @@ public interface MachineService {
 
     boolean updateMachine(Machine machine);
 
+    Machine getMachine(String machineId);
+
 }

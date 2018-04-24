@@ -37,4 +37,10 @@ public class MachineServiceImpl implements MachineService {
         machineMapper.updateMachine(machine);
         return true;
     }
+
+    @Override
+    public Machine getMachine(String machineId) {
+        Machine machine = machineMapper.getMachine(machineId);
+        return machine;
+    }
 }

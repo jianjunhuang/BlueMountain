@@ -3,6 +3,7 @@ package com.jianjunhuang.ssm.utils;
 import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.request.param.CommunityParam;
 import com.jianjunhuang.ssm.request.param.IdParam;
+import com.jianjunhuang.ssm.request.param.InsulationTemperatureParam;
 import com.jianjunhuang.ssm.request.param.VoteParam;
 import org.springframework.stereotype.Component;
 
@@ -74,4 +75,19 @@ public class ParamChecker {
         return result;
     }
 
+    public Result checkInsulationParam(InsulationTemperatureParam param) {
+        Result result = new Result();
+        if (null == param) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("insulation temperature param is null");
+            return result;
+        }
+        if (null == param.getMachineId() || "".equals(param.getMachineId())) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("machine id is null or equals ''");
+            return result;
+        }
+
+        return result;
+    }
 }

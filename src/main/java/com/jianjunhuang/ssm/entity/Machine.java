@@ -14,6 +14,12 @@ public class Machine {
     private float insulation;
     private Date lastUpdate;
 
+    public static final int STATUS_MAKING_COFFEE = 0;
+    public static final int STATUS_KEEP_WARMING = 1;
+    public static final int STATUS_STANDBY = 2;
+    public static final int STATUS_DISCONNECTED = 3;
+    public static final int STATUS_NO_WATER = 4;
+
     public Machine() {
         super();
     }
