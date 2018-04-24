@@ -25,8 +25,8 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Override
     @Transactional
-    public boolean vote(String userId, String machineId, boolean isAgree) {
-        communityMapper.setAgree(userId, machineId, isAgree);
+    public boolean vote(String communityId, String userId, boolean isAgree) {
+        communityMapper.setAgree(communityId, userId, isAgree);
         return true;
     }
 

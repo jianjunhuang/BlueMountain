@@ -6,6 +6,7 @@ import com.jianjunhuang.ssm.entity.Community;
 import com.jianjunhuang.ssm.request.param.CommunityParam;
 import com.jianjunhuang.ssm.request.param.IdParam;
 import com.jianjunhuang.ssm.request.param.VoteParam;
+import com.jianjunhuang.ssm.service.CommunityService;
 import com.jianjunhuang.ssm.utils.ParamChecker;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ import java.util.List;
 public class CommunityController {
 
     @Resource
-    private CommunityMapper communityMapper;
+    private CommunityService communityService;
     @Resource
     private ParamChecker paramChecker;
 
@@ -33,7 +34,7 @@ public class CommunityController {
         if (result.getStatus() != Result.SUCCESS) {
             return result;
         }
-        communityMapper.addCommunity(communityParam, communityParam.getUserId(), communityParam.getMachineId());
+        communityService.addComment(communityParam.getUserId(), communityParam.getMachineId(), communityParam);
         return result;
     }
 
@@ -44,18 +45,18 @@ public class CommunityController {
         if (result.getStatus() != Result.SUCCESS) {
             return result;
         }
-        communityMapper.setAgree(voteParam.getCommunityId(), voteParam.getUserId(), voteParam.isAgree());
+        communityService.vote(voteParam.getCommunityId(), voteParam.getUserId(), voteParam.isAgree());
         return result;
     }
 
     @RequestMapping(produces = "application/json;charset=UTF-8", value = "community/get", method = RequestMethod.POST)
     @ResponseBody
-    public Result getCommunity(HttpServletRequest request, HttpServletResponse response,@RequestBody IdParam idParam) {
+    public Result getCommunity(HttpServletRequest request, HttpServletResponse response, @RequestBody IdParam idParam) {
         Result result = paramChecker.checkIdParam(idParam);
         if (result.getStatus() != Result.SUCCESS) {
             return result;
         }
-        List<Community> communities = communityMapper.getAllCommunity(idParam.getMachineId(),idParam.getUserId());
+        List<Community> communities = communityService.getAllCommunity(idParam.getMachineId(), idParam.getUserId());
         result.setData(communities);
         return result;
     }

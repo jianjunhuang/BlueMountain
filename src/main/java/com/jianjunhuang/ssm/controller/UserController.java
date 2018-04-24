@@ -6,6 +6,7 @@ import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.entity.User;
 import com.jianjunhuang.ssm.request.param.IdParam;
+import com.jianjunhuang.ssm.service.UserService;
 import com.jianjunhuang.ssm.utils.ParamChecker;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class UserController {
 
     @Resource
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Resource
     private MachineMapper machineMapper;
@@ -53,10 +55,10 @@ public class UserController {
             result.setReason("咖啡机断线了，请重新联网！");
             return result;
         }
-        if (null == userMapper.getUser(user.getUserId(), user.getMachineId())) {
-            userMapper.addUser(user);
+        if (null == userService.getUser(user.getUserId(), user.getMachineId())) {
+            userService.addUser(user);
         } else {
-            userMapper.updateUser(user);
+            userService.updateUserStatus(user);
         }
         result.setStatus(Result.SUCCESS);
         return result;
@@ -66,7 +68,7 @@ public class UserController {
     @ResponseBody
     public Result<User> getUserInfo(HttpServletRequest request, HttpServletResponse response, @RequestBody IdParam idParam) {
         Result result = new Result();
-        User user = userMapper.getUser(idParam.getMachineId(), idParam.getUserId());
+        User user = userService.getUser(idParam.getMachineId(), idParam.getUserId());
         result.setStatus(Result.SUCCESS);
         result.setData(user);
         return result;
@@ -76,7 +78,7 @@ public class UserController {
     @ResponseBody
     public Result disconnected(HttpServletResponse response, HttpServletRequest request, @RequestBody IdParam idParam) {
         Result result = paramChecker.checkIdParam(idParam);
-        User user = userMapper.getUser(idParam.getMachineId(), idParam.getUserId());
+        User user = userService.getUser(idParam.getMachineId(), idParam.getUserId());
         if (null == user) {
             result.setStatus(Result.FAILED);
             result.setReason("no this user");
@@ -84,7 +86,19 @@ public class UserController {
         }
         System.out.println(user);
         user.setStatus(-1);
-        userMapper.updateUser(user);
+        userService.updateUserStatus(user);
+        return result;
+    }
+
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/getAllUsers", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<List<User>> getAllUsers(HttpServletRequest request, HttpServletResponse response, @RequestBody IdParam idParam) {
+        Result<List<User>> result = paramChecker.checkIdParam(idParam);
+        if (result.getStatus() != Result.SUCCESS) {
+            return result;
+        }
+        List<User> list = userService.getAllUser(idParam.getMachineId());
+        result.setData(list);
         return result;
     }
 }

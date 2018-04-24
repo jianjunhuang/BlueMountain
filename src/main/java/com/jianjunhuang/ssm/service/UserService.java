@@ -10,9 +10,9 @@ public interface UserService {
 
     void updateUserStatus(User user);
 
-    List<User> getAllUser();
+    List<User> getAllUser(String machineId);
 
-    User getUser(String userId);
+    User getUser(String userId,String machineId);
 
     void reservationCoffee(String userId, String machineId);
 

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -31,19 +32,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<User> getAllUser() {
-        return null;
+    public List<User> getAllUser(String machineId) {
+
+        return userMapper.getAllUser(machineId);
     }
 
     @Override
     @Transactional
-    public User getUser(String userId) {
-        return null;
+    public User getUser(String userId,String machineId) {
+        return userMapper.getUser(machineId,userId);
     }
 
     @Override
     @Transactional
-    public void reservationCoffee(String userId,String machineId) {
+    public void reservationCoffee(String userId, String machineId) {
         //todo
     }
 

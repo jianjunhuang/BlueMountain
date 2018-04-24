@@ -8,8 +8,8 @@ public interface CommunityService {
 
     boolean addComment(String userId, String machineId, Community community);
 
-    boolean vote(String userId, String machineId, boolean isAgree);
+    boolean vote(String communityId, String userId, boolean isAgree);
 
-    List<Community> getAllCommunity(String machineId,String userId);
+    List<Community> getAllCommunity(String machineId, String userId);
 
 }
