@@ -120,6 +120,7 @@ public class UserController {
             result.setReason("parameter lost");
             return result;
         }
+        System.out.println("register = " + user);
         String userName = user.getName();
         if (null == userName || "".equals(userName)) {
             result.setStatus(Result.PARAMETER_LOST);
@@ -129,15 +130,15 @@ public class UserController {
         User userTemp = userService.getUserByName(userName);
         if (userTemp != null) {
             result.setStatus(Result.FAILED);
-            result.setReason("用户名已被占用");
+            result.setReason("用户名已被注册");
             return result;
         }
-        if (null == user.getPwd() || "".equals(user.getPwd()) || user.getPwd().length() != 8) {
+        if (null == user.getPwd() || "".equals(user.getPwd())) {
             result.setStatus(Result.PARAMETER_ERR);
             result.setReason("请输入正确的8位密码");
             return result;
         }
-
+        userService.addUser(user);
         return result;
     }
 
@@ -170,6 +171,7 @@ public class UserController {
             result.setReason("user is not exist");
             return result;
         }
+        System.out.println("register = " + loginParam);
         if (!user.getPwd().equals(loginParam.getUserPwd())) {
             result.setStatus(Result.FAILED);
             result.setReason("password is wrong");

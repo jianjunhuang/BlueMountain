@@ -20,4 +20,10 @@ public class LoginParam {
     public void setUserPwd(String userPwd) {
         this.userPwd = userPwd;
     }
+
+    @Override
+    public String toString() {
+        return "userName = " + userName +
+                "userPwd = " + userPwd;
+    }
 }

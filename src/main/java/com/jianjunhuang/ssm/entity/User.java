@@ -98,7 +98,7 @@ public class User {
                 "\nfav temp = " + favTemperature +
                 "\ncup size = " + cupSize +
                 "\nmachineId = " + machineId +
-                "\nlastUpdate = " + lastUpdate.toString()+
+                "\nlastUpdate = " + lastUpdate+
                 "\npwd = "+pwd;
     }
 

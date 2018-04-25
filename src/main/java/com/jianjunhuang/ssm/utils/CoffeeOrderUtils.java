@@ -37,7 +37,7 @@ public class CoffeeOrderUtils {
                 return user;
             }
         }
-        User user = userMapper.getUser(machineId, userId);
+        User user = userMapper.getUser(userId);
         users.add(user);
         return user;
     }
