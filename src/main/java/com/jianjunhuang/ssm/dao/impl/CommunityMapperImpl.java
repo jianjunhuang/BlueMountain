@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class CommunityMapperImpl implements CommunityMapper {
     public void addCommunity(Community community, String userId, String machineId) {
         Map map = new HashMap();
         community.setCommunityId(uuidGenerator.generateUUID());
+        community.setDate(new Date());
         map.put("community", community);
         map.put("userId", userId);
         map.put("machineId", machineId);

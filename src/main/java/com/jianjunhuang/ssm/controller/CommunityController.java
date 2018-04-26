@@ -34,7 +34,10 @@ public class CommunityController {
         if (result.getStatus() != Result.SUCCESS) {
             return result;
         }
-        communityService.addComment(communityParam.getUserId(), communityParam.getMachineId(), communityParam);
+        communityService.addComment(communityParam.getUserId(),
+                communityParam.getMachineId(),
+                communityParam.getTitle(),
+                communityParam.getContent());
         return result;
     }
 

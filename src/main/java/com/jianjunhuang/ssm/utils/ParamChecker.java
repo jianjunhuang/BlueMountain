@@ -34,11 +34,6 @@ public class ParamChecker {
             result.setReason("community parameter is null");
             return result;
         }
-        if (null == communityParam.getCommunityId() || "".equals(communityParam.getCommunityId())) {
-            result.setStatus(Result.PARAMETER_LOST);
-            result.setReason("communityId is null or equals ''");
-            return result;
-        }
         if (null == communityParam.getUserId() || "".equals(communityParam.getUserId())) {
             result.setStatus(Result.PARAMETER_LOST);
             result.setReason("userId is null or equals ''");

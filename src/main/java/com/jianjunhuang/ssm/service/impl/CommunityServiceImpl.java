@@ -17,8 +17,10 @@ public class CommunityServiceImpl implements CommunityService {
     private CommunityMapper communityMapper;
 
     @Override
-    @Transactional
-    public boolean addComment(String userId, String machineId, Community community) {
+    public boolean addComment(String userId, String machineId, String title, String content) {
+        Community community = new Community();
+        community.setTitle(title);
+        community.setContent(content);
         communityMapper.addCommunity(community, userId, machineId);
         return true;
     }

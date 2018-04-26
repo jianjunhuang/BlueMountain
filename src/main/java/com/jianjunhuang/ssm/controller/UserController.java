@@ -7,6 +7,7 @@ import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.entity.User;
 import com.jianjunhuang.ssm.request.param.IdParam;
 import com.jianjunhuang.ssm.request.param.LoginParam;
+import com.jianjunhuang.ssm.service.MachineService;
 import com.jianjunhuang.ssm.service.UserService;
 import com.jianjunhuang.ssm.utils.ParamChecker;
 import org.springframework.stereotype.Controller;
@@ -26,12 +27,12 @@ public class UserController {
     private UserService userService;
 
     @Resource
-    private MachineMapper machineMapper;
+    private MachineService machineService;
 
     @Resource
     private ParamChecker paramChecker;
 
-    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/connectedOrUpdate", method = RequestMethod.POST)
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/update", method = RequestMethod.POST)
     @ResponseBody
     public Result<Map> connectedOrUpdate(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) {
         Result result = new Result();
@@ -46,7 +47,7 @@ public class UserController {
             result.setReason("输入的 machineId 错误");
             return result;
         }
-        Machine machine = machineMapper.getMachine(machineId);
+        Machine machine = machineService.getMachine(machineId);
         if (null == machine) {
             result.setStatus(Result.MACHINE_NOT_FOUND);
             result.setReason("没有找到该咖啡机，请先添加咖啡机！");
@@ -96,6 +97,30 @@ public class UserController {
         user.setMachineId("");
         user.setStatus(User.OUTLINE);
         userService.updateUserStatus(user);
+        return result;
+    }
+
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/connect", method = RequestMethod.POST)
+    @ResponseBody
+    public Result connect(HttpServletRequest request, HttpServletResponse response, @RequestBody IdParam idParam) {
+        Result<Machine> result = paramChecker.checkIdParam(idParam);
+        if (result.getStatus() != Result.SUCCESS) {
+            return result;
+        }
+        User user = userService.getUser(idParam.getUserId());
+        if (null == user) {
+            result.setStatus(Result.USER_NOT_FOUND);
+            result.setReason("user not found");
+            return result;
+        }
+        Machine machine = machineService.getMachine(idParam.getMachineId());
+        if (null == machine) {
+            result.setStatus(Result.MACHINE_NOT_FOUND);
+            result.setReason("machine not found");
+            return result;
+        }
+        user.setMachineId(machine.getMachineId());
+        result.setData(machine);
         return result;
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CommunityService {
 
-    boolean addComment(String userId, String machineId, Community community);
+    boolean addComment(String userId, String machineId, String title, String content);
 
     boolean vote(String communityId, String userId, boolean isAgree);
 

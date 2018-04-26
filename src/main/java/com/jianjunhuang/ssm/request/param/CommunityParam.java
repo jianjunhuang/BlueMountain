@@ -4,17 +4,13 @@ import com.jianjunhuang.ssm.entity.Community;
 
 import java.util.Date;
 
-public class CommunityParam extends Community {
+public class CommunityParam {
     private String userId;
     private String machineId;
+    private String title;
+    private String content;
 
     public CommunityParam() {
-    }
-
-    public CommunityParam(String communityId, String title, String content, Date date, int agreeNum, int disagreeNum, int isAgree, String userId, String machineId) {
-        super(communityId, title, content, date, agreeNum, disagreeNum, isAgree);
-        this.userId = userId;
-        this.machineId = machineId;
     }
 
     public String getUserId() {
@@ -31,5 +27,21 @@ public class CommunityParam extends Community {
 
     public void setMachineId(String machineId) {
         this.machineId = machineId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
