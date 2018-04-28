@@ -44,11 +44,12 @@ public class CommunityController {
     @RequestMapping(produces = "application/json;charset=UTF-8", value = "community/vote", method = RequestMethod.POST)
     @ResponseBody
     public Result vote(HttpServletRequest request, HttpServletResponse response, @RequestBody VoteParam voteParam) {
+        System.out.println(voteParam);
         Result result = paramChecker.checkVoteParam(voteParam);
         if (result.getStatus() != Result.SUCCESS) {
             return result;
         }
-        communityService.vote(voteParam.getCommunityId(), voteParam.getUserId(), voteParam.isAgree());
+        communityService.vote(voteParam.getCommunityId(), voteParam.getUserId(), Integer.parseInt(voteParam.isAgree()));
         return result;
     }
 

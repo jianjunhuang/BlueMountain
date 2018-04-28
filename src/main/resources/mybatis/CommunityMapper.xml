@@ -15,14 +15,14 @@
             t_disagree.disagreeNum,
             t.f_is_agree
         FROM t_community c
-            INNER JOIN (select
+            LEFT JOIN (select
                             f_community_id,
                             count(t_community_disposition.f_community_id) agreeNum
                         from t_community_disposition
                         where t_community_disposition.f_is_agree = 1
                         group by f_community_id) t_agree
                 ON c.f_community_id = t_agree.f_community_id AND c.f_machine_id = #{machineId}
-            INNER JOIN (select
+            LEFT JOIN (select
                             f_community_id,
                             count(t_community_disposition.f_community_id) disagreeNum
                         from t_community_disposition

@@ -41,7 +41,7 @@ public class CommunityMapperImpl implements CommunityMapper {
     }
 
     @Override
-    public void setAgree(String communityId, String userId, boolean isAgree) {
+    public void setAgree(String communityId, String userId, int isAgree) {
         Map map = new HashMap();
         map.put("communityId", communityId);
         map.put("userId", userId);

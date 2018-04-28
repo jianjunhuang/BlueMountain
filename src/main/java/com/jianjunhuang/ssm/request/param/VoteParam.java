@@ -3,12 +3,12 @@ package com.jianjunhuang.ssm.request.param;
 public class VoteParam {
     private String userId;
     private String communityId;
-    private boolean isAgree;
+    private String isAgree;
 
     public VoteParam() {
     }
 
-    public VoteParam(String userId, String communityId, boolean isAgree) {
+    public VoteParam(String userId, String communityId, String isAgree) {
         this.userId = userId;
         this.communityId = communityId;
         this.isAgree = isAgree;
@@ -30,11 +30,18 @@ public class VoteParam {
         this.communityId = communityId;
     }
 
-    public boolean isAgree() {
+    public String isAgree() {
         return isAgree;
     }
 
-    public void setAgree(boolean agree) {
+    public void setIsAgree(String agree) {
         isAgree = agree;
+    }
+
+    @Override
+    public String toString() {
+        return "userId=" + userId +
+                "communityId=" + communityId +
+                "isAgree=" + isAgree;
     }
 }

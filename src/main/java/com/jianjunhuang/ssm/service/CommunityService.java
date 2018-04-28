@@ -8,7 +8,7 @@ public interface CommunityService {
 
     boolean addComment(String userId, String machineId, String title, String content);
 
-    boolean vote(String communityId, String userId, boolean isAgree);
+    boolean vote(String communityId, String userId, int isAgree);
 
     List<Community> getAllCommunity(String machineId, String userId);
 

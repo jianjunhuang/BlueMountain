@@ -64,6 +64,11 @@ public class ParamChecker {
             result.setReason("communityId is null or equals ''");
             return result;
         }
+        if (voteParam.isAgree() == null || voteParam.isAgree().equals("0")) {
+            result.setStatus(Result.PARAMETER_ERR);
+            result.setReason("please make a choice");
+            return result;
+        }
         return result;
     }
 
