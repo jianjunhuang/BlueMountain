@@ -18,8 +18,8 @@
 
     <update id="updateMachine">
         UPDATE t_machine
-        SET f_status    = #{machine.status}, f_temperature = #{machine.temperature}, f_level = #{machine.level},
-            f_connected = #{machine.isConnected}, f_insulation = #{machine.insulation};
+        SET f_status    = #{status}, f_temperature = #{temperature}, f_level = #{level},
+            f_connected = #{isConnected}, f_insulation = #{insulation};
     </update>
 
     <resultMap id="Machine" type="com.jianjunhuang.ssm.entity.Machine">
