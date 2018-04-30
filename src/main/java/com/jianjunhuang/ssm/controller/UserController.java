@@ -1,12 +1,12 @@
 package com.jianjunhuang.ssm.controller;
 
-import com.jianjunhuang.ssm.dao.MachineMapper;
-import com.jianjunhuang.ssm.dao.UserMapper;
 import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.entity.User;
 import com.jianjunhuang.ssm.request.param.IdParam;
 import com.jianjunhuang.ssm.request.param.LoginParam;
+import com.jianjunhuang.ssm.request.param.UpdateUserCupSizeParam;
+import com.jianjunhuang.ssm.request.param.UpdateUserNameParam;
 import com.jianjunhuang.ssm.service.MachineService;
 import com.jianjunhuang.ssm.service.UserService;
 import com.jianjunhuang.ssm.utils.ParamChecker;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.crypto.Mac;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -97,6 +96,7 @@ public class UserController {
         user.setMachineId("");
         user.setStatus(User.OUTLINE);
         userService.updateUserStatus(user);
+        result.setData(user);
         return result;
     }
 
@@ -202,6 +202,49 @@ public class UserController {
             result.setReason("password is wrong");
             return result;
         }
+        result.setData(user);
+        return result;
+    }
+
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/updateUserName", method = RequestMethod.POST)
+    @ResponseBody
+    public Result updateUserName(HttpServletRequest request, HttpServletResponse response, @RequestBody UpdateUserNameParam param) {
+        Result result = paramChecker.checkUpdateUserNameParam(param);
+        if (result.getStatus() != Result.SUCCESS) {
+            return result;
+        }
+        User user = userService.getUser(param.getUserId());
+        if (null == user) {
+            result.setStatus(Result.PARAMETER_ERR);
+            result.setReason("user not found");
+            return result;
+        }
+        if (userService.getUserByName(param.getUserName()) != null) {
+            result.setStatus(Result.FAILED);
+            result.setReason("user name can not repeat");
+            return result;
+        }
+        user.setName(param.getUserName());
+        userService.updateUserStatus(user);
+        result.setData(user);
+        return result;
+    }
+
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "user/updateUserCupSize", method = RequestMethod.POST)
+    @ResponseBody
+    public Result updateUserCupSize(HttpServletRequest request, HttpServletResponse response, @RequestBody UpdateUserCupSizeParam param) {
+        Result result = paramChecker.checkUpdateUserCupSizeParam(param);
+        if (result.getStatus() != Result.SUCCESS) {
+            return result;
+        }
+        User user = userService.getUser(param.getUserId());
+        if (null == user) {
+            result.setStatus(Result.PARAMETER_ERR);
+            result.setReason("user not found");
+            return result;
+        }
+        user.setCupSize(param.getCupSize());
+        userService.updateUserStatus(user);
         result.setData(user);
         return result;
     }

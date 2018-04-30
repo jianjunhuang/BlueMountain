@@ -2,6 +2,8 @@ package com.jianjunhuang.ssm.utils;
 
 import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.request.param.*;
+import org.apache.ibatis.executor.ReuseExecutor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -102,4 +104,40 @@ public class ParamChecker {
         }
         return result;
     }
+
+    public Result checkUpdateUserNameParam(UpdateUserNameParam param) {
+        Result result = new Result();
+        if (null == param) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("param is null");
+            return result;
+        }
+        if (null == param.getUserId() || "".equals(param.getUserId())) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("userId is null or equals ''");
+            return result;
+        }
+        if (null == param.getUserName() || "".equals(param.getUserName())) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("userName is null or equals ''");
+            return result;
+        }
+        return result;
+    }
+
+    public Result checkUpdateUserCupSizeParam(UpdateUserCupSizeParam param) {
+        Result result = new Result();
+        if (null == param) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("param is null");
+            return result;
+        }
+        if (null == param.getUserId() || "".equals(param.getUserId())) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("userId is null or equals ''");
+            return result;
+        }
+        return result;
+    }
 }
+
