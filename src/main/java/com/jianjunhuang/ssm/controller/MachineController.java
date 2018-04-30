@@ -75,8 +75,42 @@ public class MachineController {
         if (result.getStatus() != Result.SUCCESS) {
             return result;
         }
+        Machine machine = machineService.getMachine(param.getMachineId());
+        if (null == machine) {
+            result.setStatus(Result.PARAMETER_ERR);
+            result.setReason("machine mot found");
+            return result;
+        }
+        machine.setInsulation(param.getTemperature());
+        machineService.updateMachine(machine);
         String json = "{\"action\":3,\"temperature\":" + param.getTemperature() + "}";
         handler.sendMessageToMachine(new TextMessage(json), param.getMachineId());
+        result.setData(machine);
+        return result;
+    }
+
+    @RequestMapping(produces = "application/json;charset=UTF-8", value = "machine/getMachine", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<Machine> getMachine(HttpServletResponse response, HttpServletRequest request, @RequestBody IdParam idParam) {
+        Result<Machine> result = new Result<>();
+        String machineId = idParam.getMachineId();
+        if (null == machineId || "".equals(machineId)) {
+            result.setStatus(Result.PARAMETER_LOST);
+            result.setReason("lost parameter machineId");
+            return result;
+        }
+
+        if (result.getStatus() != Result.SUCCESS) {
+            return result;
+        }
+        System.out.println("machineId = " + machineId);
+        Machine machine = machineService.getMachine(machineId);
+        if (null == machine) {
+            result.setStatus(Result.FAILED);
+            result.setReason("machine not found");
+            return result;
+        }
+        result.setData(machine);
         return result;
     }
 
