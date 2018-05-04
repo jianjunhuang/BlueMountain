@@ -2,9 +2,13 @@ package com.jianjunhuang.ssm.controller;
 
 import com.jianjunhuang.ssm.dto.Result;
 import com.jianjunhuang.ssm.entity.Machine;
+import com.jianjunhuang.ssm.entity.User;
 import com.jianjunhuang.ssm.request.param.IdParam;
 import com.jianjunhuang.ssm.request.param.InsulationTemperatureParam;
+import com.jianjunhuang.ssm.serversocket.EspServerSocket;
 import com.jianjunhuang.ssm.service.MachineService;
+import com.jianjunhuang.ssm.service.UserService;
+import com.jianjunhuang.ssm.utils.CoffeeOrderUtils;
 import com.jianjunhuang.ssm.utils.ParamChecker;
 import com.jianjunhuang.ssm.websocket.CoffeeWebSocketHandler;
 import org.springframework.stereotype.Controller;
@@ -26,9 +30,11 @@ public class MachineController {
     @Resource
     private MachineService machineService;
     @Resource
+    private UserService userService;
+    @Resource
     private ParamChecker paramChecker;
     @Resource
-    private CoffeeWebSocketHandler handler;
+    private CoffeeOrderUtils coffeeOrderUtils;
 
     @RequestMapping(produces = "application/json;charset=UTF-8", value = "machine/updateMachine", method = RequestMethod.POST)
     @ResponseBody
@@ -43,7 +49,6 @@ public class MachineController {
             machineService.updateMachine(machine);
         }
         result.setStatus(Result.SUCCESS);
-        handler.sendMessageToUsersInSameGroup(new TextMessage("{\"action\":1}"), machine.getMachineId());
         return result;
     }
 
@@ -54,17 +59,21 @@ public class MachineController {
         if (result.getStatus() != Result.SUCCESS) {
             return result;
         }
+        User user = userService.getUser(userParam.getUserId());
+        if (null == user) {
+            result.setStatus(Result.FAILED);
+            result.setReason("user not found");
+            return result;
+        }
+
         Machine machine = machineService.getMachine(userParam.getMachineId());
         if (machine.getStatus() == Machine.STATUS_DISCONNECTED) {
             result.setReason("咖啡机断开连接");
             result.setStatus(Result.FAILED);
             return result;
         }
-        if (machine.getStatus() != Machine.STATUS_MAKING_COFFEE) {
-            handler.sendMessageToMachine(new TextMessage("{\"action\":2}"), userParam.getMachineId());
-        }
 
-        //TODO add to order list
+        coffeeOrderUtils.addUser(userParam.getMachineId(), userParam.getUserId());
         return result;
     }
 
@@ -83,8 +92,7 @@ public class MachineController {
         }
         machine.setInsulation(param.getTemperature());
         machineService.updateMachine(machine);
-        String json = "{\"action\":3,\"temperature\":" + param.getTemperature() + "}";
-        handler.sendMessageToMachine(new TextMessage(json), param.getMachineId());
+        EspServerSocket.notifyMachineToSetInsulationTemperature(machine.getMachineId(), (int) param.getTemperature());
         result.setData(machine);
         return result;
     }

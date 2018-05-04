@@ -17,27 +17,10 @@ public class WebSockHandshakeInterceptor implements HandshakeInterceptor {
         System.out.println(serverHttpRequest.getHeaders());
         HttpHeaders httpHeaders = serverHttpRequest.getHeaders();
 
-        if (!httpHeaders.containsKey("type")) {
-            return false;
-        }
-        String type = httpHeaders.get("type").get(0);
-        if (null == type || "".equals(type)) {
-            return false;
-        }
-
-        map.put("type", type);
-
-        if (type.equals("machine")) {
-            if (httpHeaders.containsKey("machineId")) {
-                map.put("machineId", httpHeaders.get("machineId").get(0));
-                return true;
-            }
-        } else if (type.equals("phone")) {
-            if (httpHeaders.containsKey("userId") && httpHeaders.containsKey("machineId")) {
-                map.put("userId", httpHeaders.get("userId").get(0));
-                map.put("machineId", httpHeaders.get("machineId").get(0));
-                return true;
-            }
+        if (httpHeaders.containsKey("userId") && httpHeaders.containsKey("machineId")) {
+            map.put("userId", httpHeaders.get("userId").get(0));
+            map.put("machineId", httpHeaders.get("machineId").get(0));
+            return true;
         }
         return false;
     }

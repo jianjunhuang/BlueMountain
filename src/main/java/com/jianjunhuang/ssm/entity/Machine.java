@@ -19,6 +19,7 @@ public class Machine {
     public static final int STATUS_STANDBY = 2;
     public static final int STATUS_DISCONNECTED = 3;
     public static final int STATUS_NO_WATER = 4;
+    public static final int STATUS_DONE = 5;
 
     public Machine() {
         super();

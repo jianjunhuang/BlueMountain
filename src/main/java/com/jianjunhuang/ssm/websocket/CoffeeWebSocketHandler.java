@@ -1,55 +1,53 @@
 package com.jianjunhuang.ssm.websocket;
 
 
+import com.google.gson.Gson;
+import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.entity.User;
+import com.jianjunhuang.ssm.service.MachineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * just user for users
+ */
 @Component
 public class CoffeeWebSocketHandler implements WebSocketHandler {
 
     //已建立连接的用户
     private static final Map<String, LinkedList<WebSocketSession>> users = new HashMap<>();
-    private static final List<WebSocketSession> machines = new ArrayList<>();
+
+    @Resource
+    private MachineService machineService;
 
     //新连接建立的时候，被调用
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-
-        String type = (String) session.getAttributes().get("type");
+        System.out.println("connection established");
         String machineId = (String) session.getAttributes().get("machineId");
-        if (!type.equals("machine")) {
-            String userId = (String) session.getAttributes().get("userId");
-            LinkedList<WebSocketSession> list = users.get(machineId);
-            if (null == list) {
-                list = new LinkedList<>();
-            }
-            list.add(session);
-            users.put(machineId, list);
-            //TODO
-            sendMessageToUsersInSameGroup(new TextMessage(""), machineId);
-        } else {
-            machines.add(session);
-            //TODO
-            sendMessageToUsersInSameGroup(new TextMessage(""), machineId);
+        String userId = (String) session.getAttributes().get("userId");
+        LinkedList<WebSocketSession> list = users.get(machineId);
+        if (null == list) {
+            list = new LinkedList<>();
         }
+        list.add(session);
+        users.put(machineId, list);
+        notifyUserToUpdateUsers(machineId);
 
     }
 
     //TODO 处理前端发送的文本信息
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        String username = (String) session.getAttributes().get("WEBSOCKET_USERNAME");
-        // 获取提交过来的消息详情
-        System.out.println("收到用户 " + username + "的消息:" + message.toString());
-        System.out.println(session.getAttributes());
-        //回复一条信息，
-        session.sendMessage(new TextMessage("reply msg:" + message.getPayload()));
+        System.out.println(message.toString());
+        String type = (String) session.getAttributes().get("type");
+        String machineId = (String) session.getAttributes().get("machineId");
     }
 
     //传输错误时调用
@@ -66,19 +64,11 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
         removeSession(webSocketSession);
     }
 
-    private void removeSession(WebSocketSession webSocketSession) {
-        String type = (String) webSocketSession.getAttributes().get("type");
+    private static void removeSession(WebSocketSession webSocketSession) {
         String machineId = (String) webSocketSession.getAttributes().get("machineId");
-        if (type.equals("machine")) {
-            machines.remove(webSocketSession);
-            //TODO
-            sendMessageToUsersInSameGroup(new TextMessage(""),machineId);
-        } else {
-            List<WebSocketSession> list = users.get(machineId);
-            list.remove(webSocketSession);
-            //TODO
-            sendMessageToUsersInSameGroup(new TextMessage(""),machineId);
-        }
+        List<WebSocketSession> list = users.get(machineId);
+        list.remove(webSocketSession);
+        notifyUserToUpdateUsers(machineId);
     }
 
     @Override
@@ -91,7 +81,7 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
      *
      * @param message
      */
-    public void sendMessageToUsers(TextMessage message) {
+    public static void sendMessageToUsers(TextMessage message) {
         for (Map.Entry<String, LinkedList<WebSocketSession>> entry : users.entrySet()) {
             List<WebSocketSession> sessions = entry.getValue();
             for (int i = 0; i < sessions.size(); i++) {
@@ -101,7 +91,7 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
         }
     }
 
-    public void sendMessageToUsersInSameGroup(TextMessage message, String machineId) {
+    public static void sendMessageToUsersInSameGroup(TextMessage message, String machineId) {
         List<WebSocketSession> sessions = users.get(machineId);
         if (null == sessions || sessions.size() == 0) {
             System.out.println("not this machine : machineId=" + machineId);
@@ -116,7 +106,7 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
     /**
      * 给某个用户发送消息
      */
-    public void sendMessageToUser(String userId, String machineId, TextMessage message) {
+    public static void sendMessageToUser(String userId, String machineId, TextMessage message) {
         List<WebSocketSession> sessions = users.get(machineId);
         if (null == sessions || sessions.size() == 0) {
             return;
@@ -134,36 +124,7 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
         }
     }
 
-    /**
-     * 给所有机器发送信息
-     *
-     * @param textMessage
-     */
-    public void sendMessageToMachines(TextMessage textMessage) {
-        for (int i = 0; i < machines.size(); i++) {
-            WebSocketSession session = machines.get(i);
-            sendMessage(textMessage, session);
-        }
-    }
-
-    /**
-     * 给某个机器发送信息
-     *
-     * @param textMessage
-     * @param machineId
-     */
-    public void sendMessageToMachine(TextMessage textMessage, String machineId) {
-        for (int i = 0; i < machines.size(); i++) {
-            WebSocketSession session = machines.get(i);
-            String id = (String) session.getAttributes().get("machineId");
-            if (machineId.equals(id)) {
-                sendMessage(textMessage, session);
-                break;
-            }
-        }
-    }
-
-    private void sendMessage(TextMessage textMessage, WebSocketSession session) {
+    private static void sendMessage(TextMessage textMessage, WebSocketSession session) {
         if (session.isOpen()) {
             try {
                 session.sendMessage(textMessage);
@@ -172,4 +133,37 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
             }
         }
     }
+
+    public static void removeUser(String machineId, String userId) {
+        LinkedList<WebSocketSession> list = users.get(machineId);
+        Iterator<WebSocketSession> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            WebSocketSession session = iterator.next();
+            if (userId.equals(session.getAttributes().get("userId"))) {
+                removeSession(session);
+                break;
+            }
+        }
+        notifyUsersToUpdateMachine(machineId);
+    }
+
+    public static void notifyUserToUpdateUsers(String machineId) {
+        sendMessageToUsersInSameGroup(new TextMessage("{\"action\":0}"), machineId);
+    }
+
+    public static void notifyUsersToUpdateMachine(String machineId) {
+        sendMessageToUsersInSameGroup(new TextMessage("{\"action\":1}"), machineId);
+    }
+
+    public static void notifyUserToGetCoffee(String machineId, String userId) {
+        sendMessageToUser(userId, machineId, new TextMessage("{\"action\":4}"));
+    }
+
+//    public void notifyMachineToMakeCoffee(String machineId) {
+//        sendMessageToMachine(new TextMessage("{\"action\":2}"), machineId);
+//    }
+//
+//    public void notifyMachineToSetInsulationTemperature(String machine, int temperature) {
+//        sendMessageToMachine(new TextMessage("{\"action\":3,\"temperature\":" + temperature + "}"), machine);
+//    }
 }

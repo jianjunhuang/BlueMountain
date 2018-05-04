@@ -4,96 +4,74 @@ import com.jianjunhuang.ssm.dao.MachineMapper;
 import com.jianjunhuang.ssm.dao.UserMapper;
 import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.entity.User;
+import com.jianjunhuang.ssm.serversocket.EspServerSocket;
+import com.jianjunhuang.ssm.service.MachineService;
+import com.jianjunhuang.ssm.service.UserService;
 import com.jianjunhuang.ssm.websocket.CoffeeWebSocketHandler;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 
 import javax.annotation.Resource;
 import java.util.*;
 
+/*
+控制所有等待的用户
+
+ */
+@Component
 public class CoffeeOrderUtils {
 
-    private static Map<String, HashSet<User>> coffeeOrderMap = new HashMap<>();
-    private static Map<String, Machine> machineMap = new HashMap<>();
+    // machineId : usersId
+    private static Map<String, LinkedList<String>> orderMap = new HashMap<>();
 
     @Resource
-    private MachineMapper machineMapper;
+    private MachineService machineService;
 
     @Resource
-    private UserMapper userMapper;
+    private UserService userService;
 
-    @Resource
-    private CoffeeWebSocketHandler handler;
 
-    public HashSet<User> getUsers(String machineId) {
-        return coffeeOrderMap.get(machineId);
+    public void addUser(String machineId, String userId) {
+        LinkedList<String> users = orderMap.get(machineId);
+        if (null != users) {
+            users.add(userId);
+        } else {
+            users = new LinkedList<>();
+            users.add(userId);
+            orderMap.put(machineId, users);
+        }
+        EspServerSocket.notifyMachineToMakeCoffee(machineId);
     }
 
-    public User getUser(String machineId, String userId) {
-        HashSet<User> users = getUsers(machineId);
-        Iterator<User> iterator = users.iterator();
+    public void notifyUserToGetCoffee(String machineId) {
+        LinkedList<String> users = orderMap.get(machineId);
+        if (null == users) {
+            return;
+        }
+        Machine machine = machineService.getMachine(machineId);
+        int level = 1800;
+        machine.setLevel(level);
+
+        Iterator<String> iterator = users.iterator();
         while (iterator.hasNext()) {
-            User user = iterator.next();
-            if (user.getUserId().equals(userId)) {
-                return user;
+            String userId = iterator.next();
+            User user = userService.getUser(userId);
+            if (null == user) {
+                iterator.remove();
+                continue;
+            }
+            if (user.getCupSize() < level) {
+                CoffeeWebSocketHandler.notifyUserToGetCoffee(machineId, userId);
+                CoffeeWebSocketHandler.removeUser(machineId, userId);
+                level = level - (int) user.getCupSize();
+            }
+            try {
+                //wait 5 minute
+                Thread.sleep(5 * 1000 * 60);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        User user = userMapper.getUser(userId);
-        users.add(user);
-        return user;
-    }
-
-    public Machine getMachine(String machineId) {
-        Machine machine = machineMap.get(machineId);
-        if (null == machine) {
-            machine = machineMapper.getMachine(machineId);
-        }
-        return machine;
-    }
-
-    public boolean containMachine(String machineId) {
-        Machine machine = new Machine();
-        machine.setMachineId(machineId);
-        return coffeeOrderMap.containsKey(machineId);
-    }
-
-    public void applyCoffee(String machineId, List<User> users) {
-//        if (null == machineId) {
-//            System.out.println("machineId is null");
-//            return;
-//        }
-//        if (null == users || users.size() == 0) {
-//            System.out.println("List<User> is null");
-//            return;
-//        }
-//        coffeeOrderMap.put(machineId, new LinkedList<>(users));
-//        //TODO notify
-    }
-
-    public void gotCoffee(String machineId, User user) {
-        if (null == user) {
-            return;
-        }
-        HashSet<User> users = getUsers(machineId);
-//        for (int i = 0; i < users.size(); i++) {
-//            User bean = users.
-//            if (user.getUserId().equals(bean.getUserId())) {
-//                //TODO change status
-//                bean.setStatus(-1);
-//                return;
-//            }
-//        }
-//        users.add(user);
-//        //TODO notify
-    }
-
-    public void notifyCoffee(String machineId) {
-        if (null == machineId || "".equals(machineId)) {
-            return;
-        }
-//        LinkedList<User> user = getUsers()
-    }
-
-    public static Map<String, HashSet<User>> getCoffeeOrderMap() {
-        return coffeeOrderMap;
     }
 }
