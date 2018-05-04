@@ -73,5 +73,8 @@ public class CoffeeOrderUtils {
                 e.printStackTrace();
             }
         }
+        if (users.size() > 0) {
+            EspServerSocket.notifyMachineToMakeCoffee(machineId);
+        }
     }
 }
