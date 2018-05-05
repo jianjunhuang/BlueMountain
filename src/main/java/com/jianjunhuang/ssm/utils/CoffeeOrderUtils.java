@@ -63,7 +63,6 @@ public class CoffeeOrderUtils {
             }
             if (user.getCupSize() < level) {
                 CoffeeWebSocketHandler.notifyUserToGetCoffee(machineId, userId);
-                CoffeeWebSocketHandler.removeUser(machineId, userId);
                 level = level - (int) user.getCupSize();
             }
             try {

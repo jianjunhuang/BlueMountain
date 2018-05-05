@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.jianjunhuang.ssm.entity.Machine;
 import com.jianjunhuang.ssm.entity.User;
 import com.jianjunhuang.ssm.service.MachineService;
+import com.jianjunhuang.ssm.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,9 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
     @Resource
     private MachineService machineService;
 
+    @Resource
+    private UserService userService;
+
     //新连接建立的时候，被调用
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -38,6 +42,15 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
         }
         list.add(session);
         users.put(machineId, list);
+        User user = userService.getUser(userId);
+        if (null == user) {
+            removeUser(machineId, userId);
+            return;
+        }
+        if (user.getStatus() == User.OUTLINE) {
+            user.setStatus(User.ONLINE);
+            userService.updateUserStatus(user);
+        }
         notifyUserToUpdateUsers(machineId);
 
     }
@@ -134,12 +147,15 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
         }
     }
 
-    public static void removeUser(String machineId, String userId) {
+    public void removeUser(String machineId, String userId) {
         LinkedList<WebSocketSession> list = users.get(machineId);
         Iterator<WebSocketSession> iterator = list.iterator();
         while (iterator.hasNext()) {
             WebSocketSession session = iterator.next();
             if (userId.equals(session.getAttributes().get("userId"))) {
+                User user = userService.getUser(userId);
+                user.setStatus(User.OUTLINE);
+                userService.updateUserStatus(user);
                 removeSession(session);
                 break;
             }

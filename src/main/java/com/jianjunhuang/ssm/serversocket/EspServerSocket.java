@@ -140,6 +140,7 @@ public class EspServerSocket extends Thread {
                     if (socket != null && !socket.isClosed()) {
                         socket.close();
                         socketMap.remove(id);
+                        //TODO update user
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
