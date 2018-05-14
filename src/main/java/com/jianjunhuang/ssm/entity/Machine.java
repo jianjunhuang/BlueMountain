@@ -89,7 +89,7 @@ public class Machine {
                 "\nlevel=" + level +
                 "\nisConnected=" + isConnected +
                 "\ninsulation=" + insulation +
-                "\nlastUpdate=" + lastUpdate.toString();
+                "\nlastUpdate=" + lastUpdate;
     }
 
     @Override

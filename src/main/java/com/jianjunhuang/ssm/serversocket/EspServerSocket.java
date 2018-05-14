@@ -108,13 +108,13 @@ public class EspServerSocket extends Thread {
                     if ("".equals(str)) {
                         continue;
                     }
-                    System.out.println(str);
                     try {
+                        System.out.println("Esp发过来的数据>>>>>>>：" + str);
                         Machine machine = gson.fromJson(str, Machine.class);
-                        System.out.println("Esp发过来的数据：" + machine);
+                        System.out.println("Esp发过来的数据_______：" + machine);
+                        EspServerSocket.socketMap.put(machine.getMachineId(), this);
                         //update machine status
                         machineService.updateMachine(machine);
-                        EspServerSocket.socketMap.put(machine.getMachineId(), this);
                         switch (machine.getStatus()) {
                             case Machine.STATUS_KEEP_WARMING: {
                                 if (preStatus == Machine.STATUS_MAKING_COFFEE) {
@@ -125,10 +125,10 @@ public class EspServerSocket extends Thread {
                         }
                         preStatus = machine.getStatus();
                         CoffeeWebSocketHandler.notifyUsersToUpdateMachine(machine.getMachineId());
-                    String outMsg = "{\"action\":-1}";
-                    out.write(outMsg.getBytes());
+                        String outMsg = "{\"action\":-1}";
+                        out.write(outMsg.getBytes());
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
 
                 }
@@ -172,9 +172,11 @@ public class EspServerSocket extends Thread {
     }
 
     public static void notifyMachineToMakeCoffee(String machineId) {
+        System.out.println(">>>>>>>>>>>>>>>" + machineId);
         ProcessSocketData process = getSocketMap().get(machineId);
         if (null != process) {
             process.send("{\"action\":2}");
+            System.out.println("send >>>>>>>>>>>>>>>" + machineId);
         }
     }
 
