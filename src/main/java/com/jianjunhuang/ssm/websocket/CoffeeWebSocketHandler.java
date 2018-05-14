@@ -8,6 +8,7 @@ import com.jianjunhuang.ssm.service.MachineService;
 import com.jianjunhuang.ssm.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
@@ -27,7 +28,7 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
     @Resource
     private MachineService machineService;
 
-    @Resource
+    @Autowired
     private UserService userService;
 
     //新连接建立的时候，被调用
@@ -42,6 +43,9 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
         }
         list.add(session);
         users.put(machineId, list);
+        if (null == userService) {
+            System.out.println(">>>>>>>>>> userServer is null");
+        }
         User user = userService.getUser(userId);
         if (null == user) {
             removeUser(machineId, userId);
