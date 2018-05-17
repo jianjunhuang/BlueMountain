@@ -72,10 +72,14 @@ public class MachineController {
             result.setStatus(Result.FAILED);
             return result;
         }
-        user.setStatus(User.WAITING);
-        userService.updateUserStatus(user);
-        CoffeeWebSocketHandler.notifyUserToUpdateUsers(userParam.getMachineId());
-        coffeeOrderUtils.addUser(userParam.getMachineId(), userParam.getUserId());
+        if (coffeeOrderUtils.addUser(userParam.getMachineId(), userParam.getUserId())) {
+            user.setStatus(User.WAITING);
+            userService.updateUserStatus(user);
+            CoffeeWebSocketHandler.notifyUserToUpdateUsers(userParam.getMachineId());
+        } else {
+            result.setStatus(Result.FAILED);
+            result.setReason("已预约咖啡");
+        }
         return result;
     }
 

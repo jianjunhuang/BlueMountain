@@ -15,6 +15,8 @@ import org.springframework.web.socket.WebSocketHandler;
 import javax.annotation.Resource;
 import java.util.*;
 
+import static java.lang.Thread.sleep;
+
 /*
 控制所有等待的用户
 
@@ -31,49 +33,76 @@ public class CoffeeOrderUtils {
     @Resource
     private UserService userService;
 
-
-    public void addUser(String machineId, String userId) {
+    public String getUser(String machineId, String userId) {
         LinkedList<String> users = orderMap.get(machineId);
-        if (null != users) {
-            users.add(userId);
-        } else {
-            users = new LinkedList<>();
-            users.add(userId);
-            orderMap.put(machineId, users);
+        if (null == users) {
+            return null;
         }
+        for (String str : users) {
+            if (str.equals(userId)) {
+                return str;
+            }
+        }
+        return null;
+    }
+
+    public void removeUser() {
+    }
+
+
+    public boolean addUser(String machineId, String userId) {
+        LinkedList<String> users = orderMap.get(machineId);
+//        if (null != users) {
+//            if (null != getUser(machineId, userId)) {
+//                return false;
+//            }
+//            users.add(userId);
+//        } else {
+//            users = new LinkedList<>();
+//            users.add(userId);
+//            orderMap.put(machineId, users);
+//        }
         EspServerSocket.notifyMachineToMakeCoffee(machineId);
+        return true;
     }
 
     public void notifyUserToGetCoffee(String machineId) {
-        LinkedList<String> users = orderMap.get(machineId);
-        if (null == users) {
-            return;
-        }
-        Machine machine = machineService.getMachine(machineId);
-        int level = 1800;
-        machine.setLevel(level);
+        System.out.println("<<<<<<<<<<<<<<<<<<<<notify user to get coffee-1>>>>>>>>>>>>>>>>>");
 
-        Iterator<String> iterator = users.iterator();
-        while (iterator.hasNext()) {
-            String userId = iterator.next();
-            User user = userService.getUser(userId);
-            if (null == user) {
+        new Thread(() -> {
+            LinkedList<String> users = orderMap.get(machineId);
+            if (null == users) {
+                return;
+            }
+            Machine machine = machineService.getMachine(machineId);
+//        int level = 1800;
+//        machine.setLevel(level);
+
+            Iterator<String> iterator = users.iterator();
+            while (iterator.hasNext()) {
+                String userId = iterator.next();
+                User user = userService.getUser(userId);
+                if (null == user) {
+                    iterator.remove();
+                    continue;
+                }
+//            if (user.getCupSize() < level) {
+                System.out.println("<<<<<<<<<<<<<<<<<<<<notify user to get coffee-2>>>>>>>>>>>>>>>>>");
                 iterator.remove();
-                continue;
-            }
-            if (user.getCupSize() < level) {
                 CoffeeWebSocketHandler.notifyUserToGetCoffee(machineId, userId);
-                level = level - (int) user.getCupSize();
+//                level = level - (int) user.getCupSize();
+//            }
+//                wait 5 minute
+                try {
+                    sleep(5 * 1000 * 60);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            try {
-                //wait 5 minute
-                Thread.sleep(5 * 1000 * 60);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        if (users.size() > 0) {
-            EspServerSocket.notifyMachineToMakeCoffee(machineId);
-        }
+//        if (users.size() > 0) {
+//            EspServerSocket.notifyMachineToMakeCoffee(machineId);
+//        }
+        }).start();
+
     }
 }

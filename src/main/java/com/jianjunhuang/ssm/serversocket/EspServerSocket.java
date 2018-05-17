@@ -6,6 +6,7 @@ import com.jianjunhuang.ssm.service.MachineService;
 import com.jianjunhuang.ssm.utils.CoffeeOrderUtils;
 import com.jianjunhuang.ssm.websocket.CoffeeWebSocketHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
 
 import javax.annotation.Resource;
 import java.io.DataInputStream;
@@ -109,19 +110,20 @@ public class EspServerSocket extends Thread {
                         continue;
                     }
                     try {
-                        System.out.println("Esp发过来的数据>>>>>>>：" + str);
-                        Machine machine = gson.fromJson(str, Machine.class);
-                        System.out.println("Esp发过来的数据_______：" + machine);
+                        Machine machine = null;
+                        try {
+                            System.out.println("Esp发过来的数据>>>>>>>>>>>>>：\n" + str);
+                            machine = gson.fromJson(str, Machine.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         EspServerSocket.socketMap.put(machine.getMachineId(), this);
                         //update machine status
                         machineService.updateMachine(machine);
-                        switch (machine.getStatus()) {
-                            case Machine.STATUS_KEEP_WARMING: {
-                                if (preStatus == Machine.STATUS_MAKING_COFFEE) {
-                                    coffeeOrderUtils.notifyUserToGetCoffee(machine.getMachineId());
-                                }
-                                break;
-                            }
+                        if (preStatus == Machine.STATUS_MAKING_COFFEE
+                                && machine.getStatus() != Machine.STATUS_MAKING_COFFEE) {
+//                            coffeeOrderUtils.notifyUserToGetCoffee(machine.getMachineId());
+                            CoffeeWebSocketHandler.sendMessageToUsersInSameGroup(new TextMessage("{\"action\":4}"), machine.getMachineId());
                         }
                         preStatus = machine.getStatus();
                         CoffeeWebSocketHandler.notifyUsersToUpdateMachine(machine.getMachineId());
@@ -177,6 +179,8 @@ public class EspServerSocket extends Thread {
         if (null != process) {
             process.send("{\"action\":2}");
             System.out.println("send >>>>>>>>>>>>>>>" + machineId);
+        } else {
+            System.out.println(">>>>>>>>>>>>>> machine " + machineId + " is not in line");
         }
     }
 

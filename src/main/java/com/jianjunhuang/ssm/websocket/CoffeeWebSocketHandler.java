@@ -43,12 +43,10 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
         }
         list.add(session);
         users.put(machineId, list);
-        if (null == userService) {
-            System.out.println(">>>>>>>>>> userServer is null");
-        }
         User user = userService.getUser(userId);
         if (null == user) {
-            removeUser(machineId, userId);
+            System.out.println(">>>>>>>>>>>>>>>>user is null>>>>>>>>>>>>>");
+            removeSession(session);
             return;
         }
         if (user.getStatus() == User.OUTLINE) {
@@ -70,7 +68,7 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
     //传输错误时调用
     @Override
     public void handleTransportError(WebSocketSession webSocketSession, Throwable throwable) throws Exception {
-        System.out.println("Handle client transport error");
+        System.out.println("-----------------Handle client transport error----------------" + throwable.getMessage() + " " + throwable.toString());
         removeSession(webSocketSession);
     }
 
@@ -78,6 +76,9 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus closeStatus) throws Exception {
         System.out.println("Handle client close");
+//        removeSession(webSocketSession);
+        String machineId = (String) webSocketSession.getAttributes().get("machineId");
+        String userId = (String) webSocketSession.getAttributes().get("userId");
         removeSession(webSocketSession);
     }
 
@@ -109,13 +110,13 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
     }
 
     public static void sendMessageToUsersInSameGroup(TextMessage message, String machineId) {
+        System.out.println(">>>>>>>>>>>>>>>notify users to update>>>>>>>>>>>>");
         List<WebSocketSession> sessions = users.get(machineId);
         if (null == sessions || sessions.size() == 0) {
-            System.out.println("not this machine : machineId=" + machineId);
+            System.out.println("the group not found : machineId=" + machineId);
             return;
         }
-        for (int i = 0; i < sessions.size(); i++) {
-            WebSocketSession session = sessions.get(i);
+        for (WebSocketSession session : sessions) {
             sendMessage(message, session);
         }
     }
@@ -126,15 +127,16 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
     public static void sendMessageToUser(String userId, String machineId, TextMessage message) {
         List<WebSocketSession> sessions = users.get(machineId);
         if (null == sessions || sessions.size() == 0) {
+            System.out.println("user not found -------> userId=" + userId + " machineId=" + machineId + " size=" + sessions.size());
             return;
         }
-        for (int i = 0; i < sessions.size(); i++) {
-            WebSocketSession session = sessions.get(i);
+        for (WebSocketSession session : sessions) {
             if (session == null) {
                 continue;
             }
             String id = (String) session.getAttributes().get("userId");
             if (null != id && id.equals(userId)) {
+                System.out.println("user found -------> userId=" + userId + " machineId=" + machineId+" "+message.getPayload());
                 sendMessage(message, session);
                 break;
             }
@@ -176,7 +178,11 @@ public class CoffeeWebSocketHandler implements WebSocketHandler {
     }
 
     public static void notifyUserToGetCoffee(String machineId, String userId) {
-        sendMessageToUser(userId, machineId, new TextMessage("{\"action\":4}"));
+        try {
+            sendMessageToUser(userId, machineId, new TextMessage("{\"action\":4}"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 //    public void notifyMachineToMakeCoffee(String machineId) {
